@@ -1,14 +1,26 @@
 <template>
-    <!-- 캘린더 뷰 -->
-    <div>
-
-    </div>
+  <FullCalendar
+    :options="calendarOptions"
+    style="padding-left: 100px; padding-right: 100px"
+  />
 </template>
 
-<script setup>
+<script>
+import FullCalendar from "@fullcalendar/vue3";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 
+export default {
+  components: {
+    FullCalendar, // make the <FullCalendar> tag available
+  },
+  data() {
+    return {
+      calendarOptions: {
+        plugins: [dayGridPlugin, interactionPlugin],
+        initialView: "dayGridMonth",
+      },
+    };
+  },
+};
 </script>
-
-<style scoped>
-
-</style>

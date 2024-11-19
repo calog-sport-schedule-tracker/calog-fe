@@ -1,14 +1,14 @@
-<template>
-<!-- 참여 대회 등록 -->
-    <div>
-
-    </div>
-</template>
-
 <script setup>
-
+import CardHeader from "@/components/CardHeader.vue";
+import CardRegistBody from "@/components/CardRegistBody.vue";
 </script>
 
-<style scoped>
+<template>
+  <!-- 참가 대회 등록 뷰 -->
+  <div>
+    <CardHeader />
+    <CardRegistBody />
+  </div>
+</template>
 
-</style>
+<style scoped></style>
