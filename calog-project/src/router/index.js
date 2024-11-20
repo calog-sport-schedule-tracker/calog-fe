@@ -2,6 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import CalendarView from '@/views/CalendarView.vue'
 import EventDetailView from '@/views/EventDetailView.vue'
 import ParticipationListView from '@/views/ParticipationListView.vue'
+import LoginView from '@/views/LoginView.vue'
+import JoinView from '@/views/JoinView.vue'
+import ThumbnailView from '@/views/ThumbnailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +23,21 @@ const router = createRouter({
         path: '/list',
         name: 'list',
         component: ParticipationListView,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
+    },
+    {
+      path: '/join',
+      name: 'join',
+      component: JoinView,
+    },
+    {
+      path: '/thumbnail',
+      name: 'thumbnail',
+      component: ThumbnailView,
     },
   ],
 })

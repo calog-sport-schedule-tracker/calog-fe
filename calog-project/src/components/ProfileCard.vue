@@ -14,7 +14,7 @@ import profileImage from "@/assets/profile.jpg";
 const profile = ref({
   image: profileImage,
   name: "짱우",
-  details: "마라톤을 좋아하는 개발자💻",
+  details: "마라톤을 좋아하는 개발자 💻",
 });
 </script>
 
@@ -33,13 +33,13 @@ const profile = ref({
 .profile-img {
   width: 100px;
   height: 100px;
-  border-radius: 50%; /* 이미지를 원형으로 */
-  margin-right: 20px;
+  border-radius: 10%; /* 이미지를 원형으로 */
+  margin-bottom: 10px;
 }
 
 .profile-info h1,
 .profile-info p {
-  margin: 0;
+  margin: 5px;
 }
 
 .profile-info {
