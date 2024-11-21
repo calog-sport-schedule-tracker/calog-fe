@@ -3,11 +3,11 @@
       <div class="modal-content">
         <button class="close-button" @click="close">X</button> <!-- 모달창 끄는 버튼 --> 
         <h2>{{ event.eventName }}</h2>
-        <p><strong>종목:</strong> {{ event.sport }}</p>
-        <p><strong>일시:</strong> {{ formatDate(event.eventDate) }}</p>
-        <p><strong>장소:</strong> {{ event.address }}, {{ event.city }}</p>
-        <p><strong>등록 시작:</strong> {{ formatDate(event.registrationStart) }}</p>
-        <p><strong>등록 마감:</strong> {{ formatDate(event.registrationDeadline) }}</p>
+        <p><strong>종목: </strong> {{ event.sport }}</p>
+        <p><strong>일시: </strong> {{ formatDate(event.eventDate) }}</p>
+        <p><strong>장소: </strong> {{ event.address }}, {{ event.city }}</p>
+        <p><strong>등록 기간: </strong> {{ formatDate(event.registrationStart) }}  -  {{ formatDate(event.registrationDeadline) }}</p>
+        
         <img :src="getEventImage(event)" alt="Event Image" />
         </div>
     </div>
