@@ -3,7 +3,7 @@
     <img :src="profile.image" alt="profile image" class="profile-img" />
     <div class="profile-info">
       <h1>{{ profile.name }}</h1>
-      <p>{{ profile.details }}</p>
+      <p class="profile-detail">{{ profile.details }}</p>
     </div>
   </div>
 </template>
@@ -25,9 +25,10 @@ const profile = ref({
   align-items: center;
   border-radius: 8px; /* 둥근 모서리 추가 */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-  padding: 20px;
+  padding: 12px;
   background-color: #fff; /* 배경색 */
-  height: 800px;
+  flex-grow: 1;
+  min-height: 80vh;
 }
 
 .profile-img {
@@ -47,5 +48,12 @@ const profile = ref({
   flex-direction: column;
   align-items: center;
   padding: 10px;
+}
+
+/* 닉네임 밑에 세부설명 글씨 크기 조절 */
+.profile-detail {
+
+  font-size: 16px; 
+
 }
 </style>

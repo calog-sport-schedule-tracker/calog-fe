@@ -5,6 +5,7 @@ import ParticipationListView from '@/views/ParticipationListView.vue'
 import LoginView from '@/views/LoginView.vue'
 import JoinView from '@/views/JoinView.vue'
 import ThumbnailView from '@/views/ThumbnailView.vue'
+import EventRegistView from '@/views/EventRegistView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/thumbnail',
       name: 'thumbnail',
       component: ThumbnailView,
+    },
+    {
+      path: '/eventRegist',
+      name: 'eventRegist',
+      component: EventRegistView,
     },
   ],
 })

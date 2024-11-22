@@ -31,6 +31,39 @@
 </script>
   
 <style scoped>
+/* 이벤트 팝업창의 body */
+.card-body {
+  display: flex;
+  padding: 20px;
+  text-align: center;
+}
+
+/* 왼쪽에 위치하는 이미지의 크기 */
+.card-body img {
+  /* 이미지 크기 -> 조금 위아래로 늘어났다가 줄어들었다가 함 */
+  width: 70%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.card-body-left,
+.card-body-right {
+  /* 남는 공간을 동일하게 나눔 50:50 */
+  flex: 1; 
+}
+
+.card-body-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+select, textarea, button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
 
 .detail-content {
   display: flex;
