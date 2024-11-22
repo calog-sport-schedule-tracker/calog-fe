@@ -1,7 +1,6 @@
 <template>
   <div>
     <Header />
-    <!-- <EventPopupRegist/> -->
     <RouterView />
   </div>
 </template>

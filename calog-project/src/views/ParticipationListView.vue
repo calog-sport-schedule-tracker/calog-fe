@@ -59,7 +59,7 @@ function goToEventRegist() {
   align-self: flex-end; /* 부모 요소 내에서 오른쪽 끝으로 정렬 */
   margin-bottom: 10px; /* 버튼과 리스트 사이 간격 추가 */
   padding: 10px 20px; /* 버튼 크기 조정 */
-  background-color: #007bff; /* 버튼 색상 */
+  background-color: #3094CA; /* 버튼 색상 */
   color: #fff; /* 버튼 텍스트 색상 */
   border: none;
   border-radius: 4px; /* 둥근 모서리 */

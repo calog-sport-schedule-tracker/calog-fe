@@ -11,6 +11,11 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/',
+      name: 'thumbnail',
+      component: ThumbnailView,
+    },
+    {
       path: '/calendar',
       name: 'calendar',
       component: CalendarView,
@@ -34,11 +39,6 @@ const router = createRouter({
       path: '/join',
       name: 'join',
       component: JoinView,
-    },
-    {
-      path: '/thumbnail',
-      name: 'thumbnail',
-      component: ThumbnailView,
     },
     {
       path: '/eventRegist',
