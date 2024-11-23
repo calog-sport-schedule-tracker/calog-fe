@@ -136,27 +136,32 @@ const registEvent = function() {
       </div>
 
       <!-- 기록 -->
-      <!-- 
-        시는 0~23
-        분, 초는 0~59 사이에서 선택할 수 있도록 selectbox
-      -->
+      <!-- 시는 0~23
+        분, 초는 0~59 사이에서 선택할 수 있도록 selectbox -->
       <div class="regist-list" id="regist-completionTime">
         
         <span>기록: </span>
-        <select v-model="completionTime.hour">
-          <option v-for="h in 24" :key="h" :value="h-1">{{ h-1 }}</option>
-        </select>
-        <span>시 </span>
+
+        <div class="completionTime">
+          <select v-model="completionTime.hour">
+            <option v-for="h in 24" :key="h" :value="h-1">{{ h-1 }}</option>
+          </select>
+          시
+        </div>
+      <div class="completionTime">
 
         <select v-model="completionTime.minute">
           <option v-for="m in 60" :key="m" :value="m-1">{{ m-1 }}</option>
         </select>
-        <span>분 </span>
+        분
+        </div>
 
+        <div class="completionTime">
         <select v-model="completionTime.second">
           <option v-for="s in 60" :key="s" :value="s-1">{{ s-1 }}</option>
         </select>
-        <span>초 </span>
+        초
+        </div>
       </div>
       <!-- 메모 -->
       <!-- text 적을 수 있는 박스  -->
@@ -188,16 +193,19 @@ const registEvent = function() {
   border-radius: 10px;
 }
 
-.card-body-left,
+.card-body-left {
+  flex: 1;
+}
 .card-body-right {
   /* 남는 공간을 동일하게 나눔 50:50 */
-  flex: 1; 
+  flex: 1.3; 
 }
 
 .regist-list {
   display: flex;
   align-items: center; /* 세로 가운데 정렬 */
   justify-content: space-between; /* 아이템 간 균등 배치 */
+  /* flex-wrap: wrap; */
   padding: 6px 0; /* 상하 간격 늘림 */
 }
 
@@ -224,7 +232,7 @@ const registEvent = function() {
 
 /* 시간, 분, 초 select 박스 스타일 */
 #regist-completionTime select {
-  min-width: 50px; /* 선택 박스 최소 너비 */
+  width: 50px; /* 선택 박스 최소 너비 */
   padding: 4px; /* 내부 여백 */
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -235,7 +243,8 @@ const registEvent = function() {
 #regist-completionTime span {
   margin: 0 2x; /* 텍스트와 select 박스 사이 간격 */
   font-weight: normal;
-  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  flex-wrap: wrap; /* 자식 요소가 부모 너비 초과 시 줄바꿈 */
+
 }
 
 
@@ -248,6 +257,7 @@ const registEvent = function() {
 .card-body-right {
   display: flex;
   flex-direction: column;
+  /* flex-wrap: wrap; */
   align-items: flex-start;
   justify-content: space-between; /* 상하 배치 간격 조정 */
   height: 100%; /* 이미지와 동일한 높이를 맞추기 위해 설정 */
@@ -304,8 +314,8 @@ fieldset {
 
 /* 메모 크기 조정 */
 #memo {
-  width: 200%; /* 넓이를 부모 컨테이너에 맞춤 */
-  height: 80px; /* 높이를 늘림 */
+  width: 500px;
+  height: 100px;
   padding: 10px; /* 내부 여백 추가 */
   font-size: 14px; /* 글자 크기 조정 */
   border: 1px solid #ccc;
@@ -314,6 +324,16 @@ fieldset {
   box-sizing: border-box;
 }
 
+.completionTime {
+  display: flex;
+  /* justify-content: center; */
+  align-items:first baseline;
+  padding-right: 10px;
+}
+
+.completionTime select {
+  margin-right: 10px;
+}
 
 </style>
   

@@ -4,6 +4,7 @@ import { useParticipationStore } from '@/stores/participation';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
+
 const pStore = useParticipationStore();
 // const eStore = useEventStore();
 const router = useRouter();
@@ -77,10 +78,7 @@ function goToDetail(id) {
 </template>
 
 <style>
-/* .participation {
-  display: flex;
-  flex-direction: column;
-} */
+
 .lists .list {
   display: flex;
   justify-content: space-between;
@@ -88,19 +86,25 @@ function goToDetail(id) {
   margin-bottom: 10px;
   border-radius: 8px; /* 둥근 모서리 */
   background-color: #fff; /* 배경색 */
+  max-width: 80vw; /* 최대 크기를 부모 컨테이너에 맞춤 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  overflow-x: hidden; /* 가로 스크롤 방지 */
 }
+
 .list-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 180px;
+  justify-content: center; /* 세로 중앙 정렬 */
+  width: 160px;
   flex-grow: 1;
 }
 
 .list-title {
   color: #8E8B8B;
   margin-bottom: 8px;
+  text-align: center;
+  width: 100%;
 }
 
 #pictogram {
