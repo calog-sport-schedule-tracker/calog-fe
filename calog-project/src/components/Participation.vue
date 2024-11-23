@@ -1,7 +1,28 @@
+<script setup>
+import { useParticipationStore } from '@/stores/participation';
+// import { useEventStore } from '@/stores/event';
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const pStore = useParticipationStore();
+// const eStore = useEventStore();
+const router = useRouter();
+
+onMounted(()=>{
+  pStore.getParticipationList();
+})
+
+function goToDetail(id) {
+  router.push({ name: 'participationDetail', params: { id } });
+}
+
+</script>
+
 <template>
   <!-- <div class="participation"> -->
     <div class="lists">
-      <div v-for="list in pStore.participationList" :key="list.id" class="list">
+      <div v-for="list in pStore.participationList" :key="list.id" class="list" @click="goToDetail(list.id)"
+      >
         
         <div class="list-item">
           <div class="list-title">날짜</div>
@@ -55,20 +76,6 @@
 </div>
 </template>
 
-<script setup>
-import { useParticipationStore } from '@/stores/participation';
-import { useEventStore } from '@/stores/event';
-import { onMounted } from 'vue';
-
-const pStore = useParticipationStore();
-const eStore = useEventStore();
-
-onMounted(()=>{
-  pStore.getParticipationList();
-})
-
-</script>
-
 <style>
 /* .participation {
   display: flex;
@@ -87,7 +94,7 @@ onMounted(()=>{
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 160px;
+  min-width: 180px;
   flex-grow: 1;
 }
 

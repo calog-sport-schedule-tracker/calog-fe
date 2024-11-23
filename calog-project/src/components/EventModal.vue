@@ -35,7 +35,7 @@
         if (!event.img) {
           if (event.sport === "마라톤") {
             return new URL('@/assets/sport-image/marathon.jpg', import.meta.url).href;
-          } else if (event.sport === "그란폰도") {
+          } else if (event.sport === "그랑폰도") {
             return new URL('@/assets/sport-image/granfondo.jpg', import.meta.url).href;
           } else if (event.sport === "테니스") {
             return new URL('@/assets/sport-image/tennis.jpg', import.meta.url).href;

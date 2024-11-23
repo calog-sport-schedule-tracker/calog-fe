@@ -16,7 +16,4 @@ nav {
   padding-bottom: 50px;
 }
 
-body {
-  font-family: 'Jua', sans-serif;
-}
 </style>
