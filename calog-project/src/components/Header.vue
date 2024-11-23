@@ -25,7 +25,7 @@ body {
 
 .head {
   background-color: #F7F7F7;
-  height: 2em;
+  height: 2.5em;
   padding: 10px;
 }
 
@@ -37,7 +37,7 @@ body {
 }
 
 .logo {
-  height: 2em;
+  height: 2.8em;
 }
 
 .logo-container {
@@ -65,7 +65,9 @@ body {
 
 
 .material-symbols-outlined {
-	user-select: none; /* 텍스트 선택 방지 */
-	cursor: pointer; /* 클릭 가능한 아이콘임을 표시 */
+  user-select: none; /* 텍스트 선택 방지 */
+  cursor: pointer; /* 클릭 가능한 아이콘임을 표시 */
+  font-size: 28px; /* 아이콘 크기 조정 */
+  transition: color 0.3s ease; /* 아이콘 색상 전환 효과 */
 }
 </style>

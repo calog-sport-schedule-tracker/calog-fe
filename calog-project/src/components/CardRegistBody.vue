@@ -120,7 +120,8 @@ const registEvent = function() {
       <!-- 일정 -->
       <!-- http://localhost:8080/api/event/{eventId}로 get 요청 보내서 eventDate 받아와서 보여줌-->
       <div class="regist-list">
-        <span>일정: {{eventDate}}</span>  
+        <span>일정: </span>  
+        <span>{{eventDate}}</span>
       </div>
 
       <!-- 종목 -->
@@ -139,7 +140,8 @@ const registEvent = function() {
         시는 0~23
         분, 초는 0~59 사이에서 선택할 수 있도록 selectbox
       -->
-      <div class="regist-list">
+      <div class="regist-list" id="regist-completionTime">
+        
         <span>기록: </span>
         <select v-model="completionTime.hour">
           <option v-for="h in 24" :key="h" :value="h-1">{{ h-1 }}</option>
@@ -195,7 +197,45 @@ const registEvent = function() {
 .regist-list {
   display: flex;
   align-items: center; /* 세로 가운데 정렬 */
-  padding: 3%;  
+  justify-content: space-between; /* 아이템 간 균등 배치 */
+  padding: 6px 0; /* 상하 간격 늘림 */
+}
+
+.regist-list label,
+.regist-list span {
+  flex: 0 0 120px; /* 고정된 너비를 적용 */
+  white-space: nowrap;
+  text-align: left;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+#sport-select,
+#category-select {
+  flex: 1; /* 남은 공간을 차지 */
+  min-width: 150px; /* 최소 너비 설정 */
+  max-width: 100%; /* 상위 컨테이너 너비에 맞게 제한 */
+  padding: 8px; /* 내부 여백 추가 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+
+/* 시간, 분, 초 select 박스 스타일 */
+#regist-completionTime select {
+  min-width: 50px; /* 선택 박스 최소 너비 */
+  padding: 4px; /* 내부 여백 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* 기록 텍스트(시, 분, 초) 스타일 */
+#regist-completionTime span {
+  margin: 0 2x; /* 텍스트와 select 박스 사이 간격 */
+  font-weight: normal;
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 
 
@@ -204,19 +244,44 @@ const registEvent = function() {
   min-width: 20px;
 }
 
-
-
+/* 등록 버튼 위치 조정 */
 .card-body-right {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between; /* 상하 배치 간격 조정 */
+  height: 100%; /* 이미지와 동일한 높이를 맞추기 위해 설정 */
 }
 
-select, textarea, button {
+select {
   margin-top: 10px;
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
+}
+
+button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+
+fieldset {
+  border: none; /* 테두리 제거 */
 }
 
 .detail-content {
@@ -237,6 +302,17 @@ select, textarea, button {
   display: flex;
 }
 
+/* 메모 크기 조정 */
+#memo {
+  width: 200%; /* 넓이를 부모 컨테이너에 맞춤 */
+  height: 80px; /* 높이를 늘림 */
+  padding: 10px; /* 내부 여백 추가 */
+  font-size: 14px; /* 글자 크기 조정 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none; /* 사용자가 크기를 조정하지 못하도록 설정 */
+  box-sizing: border-box;
+}
 
 
 </style>
