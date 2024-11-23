@@ -1,24 +1,39 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import { useParticipationStore } from '@/stores/participation';
-import CardHeader from './CardHeader.vue';
-
+import CardDetailHeader from './CardDetailHeader.vue';
 
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id; // URL의 :id를 통해 가져옴
-const detail = ref(null); // 이벤트 상세 데이터를 저장
 
 const pStore = useParticipationStore();
+
+const images = import.meta.glob('@/assets/sport-image/*.jpg', { eager: true });
+
+const getImageSrc = (sport) => {
+  const sportMapping = {
+    '마라톤': 'marathon',
+    '그랑폰도': 'granfondo',
+    '철인3종': 'triathlon',
+    '테니스': 'tennis',
+    '배드민턴': 'badminton',
+  };
+
+  const englishSportName = sportMapping[sport] || 'default';
+  const imagePath = `/src/assets/sport-image/${englishSportName}.jpg`; // glob에서의 키 경로와 일치
+  return images[imagePath]?.default || images['/src/assets/sport-image/default.jpg'].default;
+};
 
 // API 호출
 onMounted(()=> {
   pStore.getParticipationDetail(id);
   console.log("디테일 정보: ", pStore.getParticipationDetail);
-  
 })
+
+
 
 // 삭제 이벤트 처리
 const deleteParticipation = () => {
@@ -34,13 +49,14 @@ const deleteParticipation = () => {
       });
   }
 };
+
 </script>
 
 <template>
-  <CardHeader :eventName="pStore.participationDetail.eventName"/>
+  <CardDetailHeader :eventName="pStore.participationDetail.eventName"/>
   <div class="card-body">
     <div class="card-body-left">
-      <img src="@/assets/sport-image/granfondo.jpg" alt="granfondo">
+      <img :src="getImageSrc(pStore.participationDetail.sport)" :alt="pStore.participationDetail.sport">
     </div>
 
     <div class="card-body-right">
@@ -52,9 +68,11 @@ const deleteParticipation = () => {
         <p><strong>메모:</strong> {{ pStore.participationDetail.memo }}</p>
       </div>
       <div class="detail-footer">
-        <button @click="$router.back()">돌아가기</button>
-        <button @click="deleteParticipation" class="delete-button">삭제하기</button>
+        <button @click="$router.back()" class="material-symbols-outlined">arrow_back</button>
+        <button @click="updateParticipation" class="material-symbols-outlined">edit</button>
+        <button @click="deleteParticipation" class="material-symbols-outlined">delete</button>
       </div>
+
     </div>
   </div>
 </template>
@@ -129,33 +147,39 @@ function formatDate(isoDate) {
   text-align: center;
 }
 
+/* 돌아가기 버튼 */
 button {
   padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #fff; /* 밝은 회색 */
+  color: #495057; /* 짙은 회색 */
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #ced4da; /* 약간 어두운 회색 */
+}
+
+/* 수정 버튼 */
+.update-button {
+  margin-left: 10px;
+  background-color: #6c757d; /* 부드러운 파란-회색 */
+  color: #ffffff; /* 흰색 글씨 */
+}
+
+.update-button:hover {
+  background-color: #5a6268; /* 더 짙은 파란-회색 */
 }
 
 /* 삭제 버튼 */
 .delete-button {
   margin-left: 10px;
-  background-color: #dc3545;
+  background-color: #b23c17; /* 부드러운 갈색/와인색 */
+  color: #ffffff; /* 흰색 글씨 */
 }
 
 .delete-button:hover {
-  background-color: #a71d2a;
-}
-
-
-.loading {
-  text-align: center;
-  font-size: 18px;
-  color: #555;
+  background-color: #922e10; /* 더 짙은 와인색 */
 }
 </style>

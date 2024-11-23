@@ -1,6 +1,6 @@
 <script setup>
 import { useEventStore } from '@/stores/event';
-import { ref, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import axios from 'axios';
 
 const eStore = useEventStore();
@@ -8,12 +8,51 @@ const selectedSport = ref("");
 const eventDate = ref("");
 const categories = ref([]);
 const selectedCategory = ref("");
-const completionTime = ref({
-  hour: 0,
-  minute: 0,
-  second: 0
-});
+const completionTime = ref({hour: 0, minute: 0, second: 0});
 const memo = ref("");
+
+const sport = ref("");
+const selectedEventId = ref(""); // 선택된 대회의 eventId
+
+// 한국어 종목명과 영어 이미지 파일명 매핑
+const sportToImageMap = {
+  "마라톤": "marathon.jpg",
+  "그랑폰도": "granfondo.jpg",
+  "철인3종": "triathlon.jpg",
+  "테니스": "tennis.jpg",
+  "배드민턴": "badminton.jpg",
+};
+
+// 이미지 파일 미리 로드
+const images = import.meta.glob('@/assets/sport-image/*.jpg');
+
+
+// 기본 이미지 및 선택된 이미지 경로
+const selectedImage = computed(() => {
+  const defaultImage = images['/src/assets/sport-image/default.jpg']; // 기본 이미지
+  const englishFileName = sportToImageMap[sport.value];
+  const imagePath = `/src/assets/sport-image/${englishFileName}`;
+  console.log("이미지 선택 함수 실행!", sport.value);
+  return images[imagePath] || defaultImage; // 이미지가 없으면 기본 이미지 반환
+});
+
+// API 호출: eventId로 sport 및 날짜 가져오기
+const fetchEventDetails = () => {
+  if (!selectedEventId.value) return;
+  axios
+    .get(`http://localhost:8080/api/event/${selectedEventId.value}`)
+    .then((response) => {
+      const data = response.data;
+      console.log("데이타", data);
+      sport.value = data.sport; // 한국어 sport 값 설정
+      eventDate.value = formatDate(data.eventDate); // 날짜 변환
+    })
+    .catch((error) => {
+      console.error("Failed to fetch event details:", error);
+      sport.value = ""; // 초기화
+      eventDate.value = "조회 실패";
+    });
+};
 
 // 대회명이 선택되었을 때 호출될 메서드
 const fetchEventDate = () => {
@@ -66,6 +105,7 @@ onMounted(() => {
 
 // 대회 선택 시 API 호출
 watch(selectedSport, ()=>{
+  fetchEventDetails();
   fetchEventDate();
   fetchCategories();
 });
@@ -105,7 +145,7 @@ const registEvent = function() {
   <div class="card-body">
     <!-- 왼쪽에 위치할 이미지 사진 -->
     <div class="card-body-left">
-      <img src="@/assets/sport-image/granfondo.jpg" alt="granfondo">
+      <img :src="selectedImage" alt="Selected Sport Image" />
     </div>
 
     <!-- 오른쪽에 위치할 정보 -->
@@ -113,7 +153,7 @@ const registEvent = function() {
       <!-- 대회명 -->
       <div class="regist-list">
         <label for="select-event">대회:</label>
-        <select id="sport-select" v-model="selectedSport">
+        <select id="select-event" v-model="selectedSport">
           <option v-for="e in eStore.eventList" :key="e.id" :value="e.id">{{ e.eventName }}</option>
         </select>
       </div>
@@ -218,7 +258,7 @@ const registEvent = function() {
   margin-right: 10px;
 }
 
-#sport-select,
+#select-event,
 #category-select {
   flex: 1; /* 남은 공간을 차지 */
   min-width: 150px; /* 최소 너비 설정 */
