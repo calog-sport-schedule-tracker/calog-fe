@@ -7,6 +7,7 @@ const REST_API_URL = `http://localhost:8080/api/user/1/participation`
 const EVENT_URL =  `http://localhost:8080/api/event`
 
 export const useParticipationStore = defineStore('participation', () => {
+    // 1. 조회
     const participationList = ref([])
     const getParticipationList = function () {
         axios({
@@ -66,6 +67,128 @@ export const useParticipationStore = defineStore('participation', () => {
           });
       };
 
-    return { participationList, getParticipationList }
+      // 2. 참가대회 등록(Regist)
+      const registParticipation = function(participation) {
+        axios({
+          url: `http://localhost:8080/api/participation`,
+          method: 'post',
+          data: participation
+        })
+          .then(()=> {
+            console.log("참가대회 등록 완료!");
+            router.push({name: 'list'});
+          })
+          .catch(()=> {
+            console.log("참가대회 등록 실패 😞");
+          })
+      }
+
+      const participationDetail = ref({});
+      // 3. 대회 상세 보기
+      const getParticipationDetail = function(id) {
+
+        axios({
+          url: `${REST_API_URL}/${id}`,
+          method: "get",
+        })
+          .then((response) => {
+            console.log("참여 상세 정보 가져오기 성공! 🔥");
+            // console.log("참여 정보:", response.data);
+      
+            // participationDetail 업데이트 및 eventId 추출
+            participationDetail.value = response.data;
+            const eventId = response.data.eventId;
+      
+            if (!eventId) {
+              console.error("eventId가 존재하지 않습니다.");
+              return;
+            }
+
+                // 2. eventId를 기반으로 이벤트 상세 정보 가져오기
+            return axios.get(`${EVENT_URL}/${eventId}`);
+            })
+            .then((eventResponse) => {
+              console.log("이벤트 상세 정보 가져오기 성공! 🙂");
+
+              // 이벤트 상세 정보를 포맷팅 및 병합
+              const eventData = eventResponse.data;
+
+              const isoDate = eventData.eventDate;
+              const dateObj = new Date(isoDate);
+              const formattedDate = `${dateObj.getFullYear()}-${String(
+                dateObj.getMonth() + 1
+              ).padStart(2, "0")}-${String(dateObj.getDate()).padStart(2, "0")}`;
+
+              participationDetail.value = {
+                ...participationDetail.value,
+                eventDate: formattedDate,
+                eventName: eventData.eventName,
+                sport: eventData.sport,
+                city: eventData.city,
+              };
+
+              console.log("병합된 참여 상세 정보: ", participationDetail.value);
+            })
+            .catch((error) => {
+              console.error("데이터 로드 실패 😞", error);
+            })
+            .finally(() => {
+              loading.value = false; // 로딩 완료
+            });
+        };
+    //         axios({
+    //           url: `${REST_API_URL}/${eventId}`,
+    //           method: 'get',
+    //         })
+    //         .then((response) =>            
+    //           participationDetail.value = {
+    //           ...response.data, // 기존 참여 정보
+    //           eventDate: null,
+    //           eventName: null,
+    //           sport: null,
+    //         })
+            
+    //   // eventId로 이벤트 상세 정보 가져오기
+    //       axios({
+    //         url: `${EVENT_URL}/${eventId}`,
+    //         method: "get",
+    //       })
+    //         .then((eventResponse) => {
+    //           console.log("이벤트 상세 정보 가져오기 성공! 🙂");
+    //           // console.log("이벤트 정보:", eventResponse.data);
+
+    //           const eventData = eventResponse.data;
+
+    //           // 날짜 포맷팅
+    //           const isoDate = eventData.eventDate;
+    //           const dateObj = new Date(isoDate);
+    //           const formattedDate = `${dateObj.getFullYear()}-${String(
+    //             dateObj.getMonth() + 1
+    //           ).padStart(2, "0")}-${String(dateObj.getDate()).padStart(2, "0")}`;
+
+    //           // participationDetail에 이벤트 데이터 병합
+    //           participationDetail.value = {
+    //             ...participationDetail.value,
+    //             eventDate: formattedDate,
+    //             eventName: eventData.eventName,
+    //             sport: eventData.sport,
+    //             city: eventData.city,
+    //           };
+
+    //           console.log("병합된 참여 상세 정보: ", participationDetail.value);
+              
+    //         })
+    //         .catch((error) => {
+    //           console.error("이벤트 상세 정보 가져오기 실패 😞", error);
+    //         });
+    //     })
+    //     .catch((error) => {
+    //       console.error("참여 상세 정보 가져오기 실패 😞", error);
+    //     });
+    // };
+
+    const participation = ref({});
+
+    return { participationList, getParticipationList, registParticipation, participation, participationDetail, getParticipationDetail  }
   })
   

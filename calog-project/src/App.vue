@@ -1,7 +1,6 @@
 <template>
   <div>
     <Header />
-    <!-- <EventPopupRegist/> -->
     <RouterView />
   </div>
 </template>
@@ -17,7 +16,4 @@ nav {
   padding-bottom: 50px;
 }
 
-body {
-  font-family: 'Jua', sans-serif;
-}
 </style>

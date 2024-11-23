@@ -35,7 +35,7 @@
         if (!event.img) {
           if (event.sport === "마라톤") {
             return new URL('@/assets/sport-image/marathon.jpg', import.meta.url).href;
-          } else if (event.sport === "그란폰도") {
+          } else if (event.sport === "그랑폰도") {
             return new URL('@/assets/sport-image/granfondo.jpg', import.meta.url).href;
           } else if (event.sport === "테니스") {
             return new URL('@/assets/sport-image/tennis.jpg', import.meta.url).href;
@@ -75,11 +75,14 @@
     background: white;
     padding: 20px;
     border-radius: 8px;
-    width: 80%;
-    max-width: 600px;
+    width: 70%;
+    max-height: 80%; /* 창 높이를 화면의 80%로 제한 */
+    overflow-y: auto; 
+    max-width: 500px;
     position: relative;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); 
   }
+  
   .modal-content img {
   max-width: 100%;
   height: auto;

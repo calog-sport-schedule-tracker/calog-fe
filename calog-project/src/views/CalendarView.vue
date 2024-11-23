@@ -16,12 +16,15 @@
         <option value="세종">세종</option>
         <option value="경기">경기</option>
         <option value="강원">강원</option>
-        <option value="충북">충북</option>
-        <option value="충남">충남</option>
-        <option value="전북">전북</option>
-        <option value="전남">전남</option>
-        <option value="경북">경북</option>
-        <option value="경남">경남</option>
+        <!-- <option value="충북">충북</option>
+        <option value="충남">충남</option> -->
+        <!-- <option value="전북">전북</option>
+        <option value="전남">전남</option> -->
+        <option value="충청">충청</option>
+        <option value="전라">전라</option>
+        <option value="경상">경상</option>
+        <!-- <option value="경북">경북</option>
+        <option value="경남">경남</option> -->
         <option value="제주">제주</option>
       </select>
 
@@ -32,7 +35,7 @@
         <option value="배드민턴">배드민턴</option>
         <option value="테니스">테니스</option>
         <option value="철인3종">철인3종</option>
-        <option value="그란폰도">그란폰도</option>
+        <option value="그랑폰도">그랑폰도</option>
       </select>
 
       <button @click="fetchFilteredEvents">조회</button>
