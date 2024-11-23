@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import { useParticipationStore } from '@/stores/participation';
+import CardHeader from './CardHeader.vue';
 
 
 const route = useRoute();
@@ -36,16 +37,13 @@ const deleteParticipation = () => {
 </script>
 
 <template>
-  
+  <CardHeader :eventName="pStore.participationDetail.eventName"/>
   <div class="card-body">
     <div class="card-body-left">
       <img src="@/assets/sport-image/granfondo.jpg" alt="granfondo">
     </div>
 
     <div class="card-body-right">
-      <div class="detail-header">
-        <h2>{{ pStore.participationDetail.eventName }}</h2>
-      </div>
       <div class="detail-info" >
         <p><strong>대회:</strong> {{ pStore.participationDetail.eventName }}</p>
         <p><strong>일정:</strong> {{ pStore.participationDetail.eventDate }}</p>

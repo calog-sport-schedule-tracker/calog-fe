@@ -6,7 +6,6 @@ import CardDetailBody from "@/components/CardDetailBody.vue";
 <template>
   <!-- 참가 대회 등록 뷰 -->
   <div>
-    <CardHeader />
     <CardDetailBody />
   </div>
 </template>
