@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useParticipationStore } from '@/stores/participation';
 import axios from 'axios'; // axios 임포트
@@ -10,6 +10,26 @@ const router = useRouter();
 const selectedCity = ref('');
 const selectedSport = ref('');
 const selectedDate = ref(''); // 날짜 필터 추가
+
+onMounted(() => {
+  const datePicker = document.querySelector('#date-picker');
+  flatpickr(datePicker, {
+    plugins: [new window.monthSelectPlugin({})], // 월 선택 플러그인 활성화
+    dateFormat: 'F Y', // UI 표시 형식 (November 2024)
+    onChange: (selectedDates) => {
+      // 선택된 날짜를 'YYYY-MM' 형식으로 변환
+      const selectedDateObj = selectedDates[0];
+      if (selectedDateObj) {
+        const year = selectedDateObj.getFullYear();
+        const month = String(selectedDateObj.getMonth() + 1).padStart(2, '0');
+        selectedDate.value = `${year}-${month}`; // 'YYYY-MM' 형식으로 저장
+      } else {
+        selectedDate.value = ''; // 선택 취소 시 빈 값
+      }
+      console.log('선택된 날짜 (YYYY-MM):', selectedDate.value); // 디버깅용
+    },
+  });
+});
 
 // API 요청 함수
 // 필터링된 데이터를 Pinia에 전달
@@ -127,6 +147,10 @@ function goToEventRegist() {
         <option value="그랑폰도">그랑폰도</option>
       </select>
 
+         <!-- 날짜 필터 -->
+      <label for="date-picker">날짜:</label>
+      <input id="date-picker" type="text" placeholder="선택된 날짜" readonly />
+
       <button class="filterBtn" @click="fetchFilteredEvents">조회</button>
       <button class="registBtn" @click="goToEventRegist" >기록하기</button>
     </div>
@@ -161,8 +185,9 @@ function goToEventRegist() {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  
 }
+
+
 
 .header-container button {
   padding: 5px 20px;
@@ -177,11 +202,8 @@ function goToEventRegist() {
 
 }
 
-.header-container select {
+.header-container select{
   min-height: 30px; /* select 및 버튼의 동일 너비 */
-}
-
-.header-container select {
   appearance: none; /* 기본 브라우저 스타일 제거 */
   min-width: 120px; /* 기본 선택 박스 너비 */
   -webkit-appearance: none;
@@ -204,6 +226,27 @@ function goToEventRegist() {
 .filter-container select:hover {
   border-color: #3094CA; /* 호버 시 테두리 색상 */
   background-color: #e8f4fc; /* 호버 시 배경색 */
+}
+
+#date-picker {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f7f9fc;
+  font-size: 14px;
+  appearance: none;
+  min-width: 150px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  min-height: 22px;
+}
+
+#date-picker {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5z' fill='%23333'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 10px;
+  font-family: inherit;
 }
 
 </style>
