@@ -1,10 +1,19 @@
 <template>
   <div class="card-header">
-    <h1>섬섬여수 그랑폰도</h1>
+    <!-- <h1>{{ eventName }}</h1> -->
+    <h1></h1>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+// defineProps({
+//   eventName: {
+//     type: String,
+//     required: true,
+//     default: "이벤트 이름을 불러오는 중...", // 기본값 설정
+//   },
+// });
+</script>
 
 <style scoped>
 /* 이벤트 팝업창의 헤더 제목 */

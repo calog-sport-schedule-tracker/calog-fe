@@ -4,10 +4,10 @@ import CardDetailBody from "@/components/CardDetailBody.vue";
 </script>
 
 <template>
-  <!-- 대회 상세 목록 뷰 -->
+  <!-- 참가 대회 등록 뷰 -->
   <div>
     <CardHeader />
-    <CardRegistBody />
+    <CardDetailBody />
   </div>
 </template>
 

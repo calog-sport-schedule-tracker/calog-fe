@@ -70,6 +70,33 @@ watch(selectedSport, ()=>{
   fetchCategories();
 });
 
+// 대회 등록하기
+import { useParticipationStore } from '@/stores/participation';
+// ref는 이미 import 되어있음
+const pStore = useParticipationStore();
+const participation = ref({
+  // 등록할 변수들 빈 상태로 선언
+  userId: '',
+  eventId: '',
+  detail: '',
+  memo: '',
+  completionTime: '',
+})
+
+// 시간으로 변환하기 위함
+const padZero = (num) => String(num).padStart(2, '0'); // 두 자리로 변환
+
+const registEvent = function() {
+  participation.value.userId = 1;
+  participation.value.eventId = selectedSport.value;
+  participation.value.detail = categories.value.find(c => c.id === selectedCategory.value)?.category || '';
+  participation.value.memo = memo.value;
+  participation.value.completionTime = `${padZero(completionTime.value.hour)}:${padZero(completionTime.value.minute)}:${padZero(completionTime.value.second)}`;
+  console.log("전송할 데이터: ", participation.value);
+  
+  pStore.registParticipation(participation.value);
+}
+
 
 </script>
 
@@ -82,7 +109,7 @@ watch(selectedSport, ()=>{
     </div>
 
     <!-- 오른쪽에 위치할 정보 -->
-    <div class="card-body-right">
+    <fieldset class="card-body-right">
       <!-- 대회명 -->
       <div class="regist-list">
         <label for="select-event">대회:</label>
@@ -113,7 +140,7 @@ watch(selectedSport, ()=>{
         분, 초는 0~59 사이에서 선택할 수 있도록 selectbox
       -->
       <div class="regist-list">
-      <span>기록: </span>
+        <span>기록: </span>
         <select v-model="completionTime.hour">
           <option v-for="h in 24" :key="h" :value="h-1">{{ h-1 }}</option>
         </select>
@@ -128,18 +155,16 @@ watch(selectedSport, ()=>{
           <option v-for="s in 60" :key="s" :value="s-1">{{ s-1 }}</option>
         </select>
         <span>초 </span>
-
       </div>
       <!-- 메모 -->
       <!-- text 적을 수 있는 박스  -->
       <div class="regist-list">
         <label for="memo">memo: </label>
-        <textarea id="memo" v-model="memo" rows="4"></textarea>
+        <textarea id="memo" v-model="memo" rows="2"></textarea>
       </div>
 
-
       <button @click="registEvent">등록</button>
-    </div>
+   </fieldset>
   </div>
 </template>
   
