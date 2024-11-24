@@ -1,11 +1,14 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
+import { useUserStore } from "@/stores/user"; // Pinia 스토어 가져오기
 
-const email = ref('');
-const password = ref('');
+const userStore = useUserStore(); // 스토어 인스턴스
+
+const id = ref("");
+const password = ref("");
 
 const handleSubmit = () => {
-  alert('짱우님, 로그인 되었습니다!');
+  userStore.login(id.value, password.value);
 };
 </script>
 
@@ -14,8 +17,8 @@ const handleSubmit = () => {
     <img src="../assets/logo.png" alt="calog">
     <form @submit.prevent="handleSubmit" class="login-form">
       <div class="input-group">
-        <label for="email">E-mail</label>
-        <input v-model="email" type="email" id="email" required />
+        <label for="id">Id</label>
+        <input v-model="id" type="text" id="id" required />
       </div>
       <div class="input-group">
         <label for="password">Password</label>

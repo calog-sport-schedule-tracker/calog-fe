@@ -210,15 +210,8 @@ const fetchFilteredParticipationList = function (filters) {
           ...participationDetail.value, // 기존 정보 복사
           ...updatedData,   // updatedData의 속성 덮어쓰기
         };
-    
-        // participationList 업데이트
-        const index = participationList.value.findIndex(item => item.id === id);
-        if (index !== -1) {
-          // 배열 전체를 새로 재할당하여 Vue가 반응성을 감지하게 함
-          participationList.value = participationList.value.map((item, i) =>
-            i === index ? { ...item, ...updatedData } : item
-          );
-        }
+        participationDetail.value.detail = selectedCategory.value;
+
     
         console.log("갱신된 participationList: ", participationList.value);
         router.push({ name: 'list' }); // 목록 화면으로 이동
