@@ -16,11 +16,29 @@ const padZero = (num) => String(num).padStart(2, '0'); // 두 자리로 변환
 // 바꿀 내용들
 const memo = ref("");
 const completionTime = ref({hour: 0, minute: 0, second: 0});
+const selectedCategory = ref("");  // 세부 종목
+const categories = ref([]);
+
+// 세부 종목 데이터를 가져오는 함수
+const fetchCategories = (eventId) => {
+  if (!eventId) return;
+  axios
+    .get(`http://localhost:8080/api/detail/${eventId}`)
+    .then((response) => {
+      console.log("세부 종목 데이터:", response.data);
+      categories.value = response.data;
+    })
+    .catch((error) => {
+      console.error("세부 종목 로드 실패:", error);
+      categories.value = [];
+    });
+};
 
 const updateParticipation = function() { 
   const updatedData = {
     memo: memo.value,
-    // completionTime: `${padZero(completionTime.value.hour)}:${padZero(completionTime.value.minute)}:${padZero(completionTime.value.second)}`,
+    completionTime: `${padZero(completionTime.value.hour)}:${padZero(completionTime.value.minute)}:${padZero(completionTime.value.second)}`,
+    detail: categories.value.find(c => c.id === selectedCategory.value)?.category || '',
   }
   console.log("전송 데이터: ", updatedData); // 데이터 전송
   // 스토어의 update함수 호출 -> patch 요청 전송
@@ -37,6 +55,7 @@ const getImageSrc = (eventId, sport) => {
     '테니스': 'tennis',
     '배드민턴': 'badminton',
   };
+  
   const userEventImagePath = `/src/assets/sport-image/1_${eventId}.jpg`;
   const englishSportName = sportMapping[sport] || 'default';
   const sportImagePath = `/src/assets/sport-image/${englishSportName}.jpg`;
@@ -54,12 +73,41 @@ const getImageSrc = (eventId, sport) => {
   }
 };
 
-// API 호출
-onMounted(()=> {
-  pStore.getParticipationDetail(id); // 기존 참여 정보 가져오기
-  console.log("참여 상세 정보: ", pStore.getParticipationDetail);
-  memo.value = pStore.participationDetail.memo || "";
-})
+// // API 호출
+// onMounted(()=> {
+//   pStore.getParticipationDetail(id) // 기존 참여 정보 가져오기
+//   console.log("참여 상세 정보: ", pStore.getParticipationDetail);
+//   memo.value = pStore.participationDetail.memo || "";
+// })
+
+onMounted(() => {
+  // 비동기 호출에서 데이터를 가져온 후 바로 접근
+  pStore.getParticipationDetail(id);
+
+  // 데이터 접근
+  const detail = pStore.participationDetail;
+
+  if (detail) {
+    console.log("참여 상세 정보:", detail);
+
+    // 초기 값 설정
+    memo.value = detail.memo || "";
+    completionTime.value = {
+      hour: parseInt(detail.completionTime?.split(':')[0] || 0),
+      minute: parseInt(detail.completionTime?.split(':')[1] || 0),
+      second: parseInt(detail.completionTime?.split(':')[2] || 0),
+    };
+
+    // 세부 종목 로드
+    fetchCategories(detail.eventId);
+
+    // 선택된 카테고리 초기화
+    selectedCategory.value = detail.detail || "";
+  } else {
+    console.error("참여 상세 정보를 가져올 수 없습니다.");
+  }
+});
+
 
 // 삭제 이벤트 처리
 // const deleteParticipation = () => {
@@ -90,6 +138,15 @@ onMounted(()=> {
         <p class="update-list"><strong>대회:</strong> {{ pStore.participationDetail.eventName }}</p>
         <p class="update-list"><strong>일정:</strong> {{ pStore.participationDetail.eventDate }}</p>
         <p class="update-list"><strong>종목:</strong> {{ pStore.participationDetail.sport }}</p>
+        <!-- 세부 종목 -->
+        <div class="update-list" id="update-category">
+          <label for="category-select"><strong>세부: </strong></label>
+          <select id="category-select" v-model="selectedCategory">
+            <option v-for="category in categories" :key="category.id" :value="category.id">
+              {{ category.category }}
+            </option>
+          </select>
+        </div>
         <!-- 기록 -->
         <div class="update-list" id="update-completionTime">
           <span><strong>기록: </strong></span>
@@ -181,6 +238,7 @@ onMounted(()=> {
 .detail-info label {
   margin: 10px 0;
   font-size: 20px;
+  min-width: 50px;
 }
 
 .update-list {
@@ -217,13 +275,12 @@ button:hover {
 }
 
 /* 시간, 분, 초 select 박스 스타일 */
-#update-completionTime select {
+select {
   width: 50px; /* 선택 박스 최소 너비 */
   padding: 4px; /* 내부 여백 */
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  
 }
 
 /* 기록 텍스트(시, 분, 초) 스타일 */
@@ -233,12 +290,18 @@ button:hover {
   flex-wrap: wrap; /* 자식 요소가 부모 너비 초과 시 줄바꿈 */
 }
 
+#category-select {
+  min-width: 150px;
+}
+
+
 textarea {
   resize: none; /* 크기 조정 비활성화 */
   width: 100%;
   height: 100%;
 
 }
+
 
 #update-memo {
   display: flex;
