@@ -100,6 +100,20 @@ function goToDetail(id) {
   flex-grow: 1;
 }
 
+.lists .list:hover {
+  transform: scale(1.02); /* 살짝 확대 */
+  background-color: #f9f9f9; /* 은은한 배경색 변화 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 더 강하게 */
+}
+
+/* active 시 눌림 효과 */
+.lists .list:active {
+  transform: scale(0.98); /* 클릭 시 살짝 축소 */
+  background-color: #e9e9e9; /* 배경색 더 어둡게 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 그림자 더 진하게 */
+}
+
+
 .list-title {
   color: #8E8B8B;
   margin-bottom: 8px;

@@ -2,17 +2,19 @@
 import { useEventStore } from '@/stores/event';
 import { ref, computed, watch, onMounted } from 'vue';
 import axios from 'axios';
+// Vue Select 컴포넌트 전역 등록
+
+const vSelect = window.VueSelect.VueSelect; // 추가적으로 꾸밀 때 쓸 예정
 
 const eStore = useEventStore();
-const selectedSport = ref("");
+const selectedEvent = ref("");
 const eventDate = ref("");
 const categories = ref([]);
 const selectedCategory = ref("");
 const completionTime = ref({hour: 0, minute: 0, second: 0});
 const memo = ref("");
 
-const sport = ref("");
-const selectedEventId = ref(""); // 선택된 대회의 eventId
+const sport = ref(""); // 선택된 대회의 sport(마라톤, 배드민턴 등)
 
 // 한국어 종목명과 영어 이미지 파일명 매핑
 const sportToImageMap = {
@@ -23,43 +25,42 @@ const sportToImageMap = {
   "배드민턴": "badminton.jpg",
 };
 
-// 이미지 파일 미리 로드
-const images = import.meta.glob('@/assets/sport-image/*.jpg');
+// 기본 이미지 경로
+const defaultImage = "/src/assets/sport-image/default.jpg";
 
-
-// 기본 이미지 및 선택된 이미지 경로
+// 이미지 경로 계산
 const selectedImage = computed(() => {
-  const defaultImage = images['/src/assets/sport-image/default.jpg']; // 기본 이미지
-  const englishFileName = sportToImageMap[sport.value];
-  const imagePath = `/src/assets/sport-image/${englishFileName}`;
-  console.log("이미지 선택 함수 실행!", sport.value);
-  return images[imagePath] || defaultImage; // 이미지가 없으면 기본 이미지 반환
+  return sport.value && sportToImageMap[sport.value] ? `/src/assets/sport-image/${sportToImageMap[sport.value]}` : defaultImage;
 });
 
-// API 호출: eventId로 sport 및 날짜 가져오기
-const fetchEventDetails = () => {
-  if (!selectedEventId.value) return;
+// API 호출: eventId로 sport 가져오기
+const fetchEventSport = () => {
+  // 디버깅
+  console.log("fetch ⬆️ ");
+  if (!selectedEvent.value) {
+    // 디버깅
+    console.log("slectedEventId.value : false");
+    return;
+  }
   axios
-    .get(`http://localhost:8080/api/event/${selectedEventId.value}`)
+    .get(`http://localhost:8080/api/event/${selectedEvent.value}`)
     .then((response) => {
       const data = response.data;
-      console.log("데이타", data);
+      console.log("데이터: ", response.data);
       sport.value = data.sport; // 한국어 sport 값 설정
-      eventDate.value = formatDate(data.eventDate); // 날짜 변환
     })
     .catch((error) => {
-      console.error("Failed to fetch event details:", error);
+      console.error("Failed to fetch event Sport:", error);
       sport.value = ""; // 초기화
-      eventDate.value = "조회 실패";
     });
 };
 
 // 대회명이 선택되었을 때 호출될 메서드
 const fetchEventDate = () => {
-  if (!selectedSport.value) return; // 선택되지 않았을 경우 중단
-  axios.get(`http://localhost:8080/api/event/${selectedSport.value}`)
+  if (!selectedEvent.value) return; // 선택되지 않았을 경우 중단
+  axios.get(`http://localhost:8080/api/event/${selectedEvent.value}`)
     .then((response) => {
-      console.log("선택값" + selectedSport);
+      console.log("선택값" + selectedEvent);
       console.log(response.data);
       eventDate.value = formatDate(response.data.eventDate); // API 응답에서 eventDate 저장
     })
@@ -67,12 +68,12 @@ const fetchEventDate = () => {
       console.error('Failed to fetch event date:', error);
       eventDate.value = "조회 실패"; // 오류 처리
     });
-
 };
+
   // 대회 종목 가져오는 함수
   const fetchCategories = () => {
-  if (!selectedSport.value) return;
-  axios.get(`http://localhost:8080/api/detail/${selectedSport.value}`)
+  if (!selectedEvent.value) return;
+  axios.get(`http://localhost:8080/api/detail/${selectedEvent.value}`)
     .then((response) => {
       console.log("된다!")
       console.log(response.data);
@@ -104,8 +105,8 @@ onMounted(() => {
 });
 
 // 대회 선택 시 API 호출
-watch(selectedSport, ()=>{
-  fetchEventDetails();
+watch(selectedEvent, ()=>{
+  fetchEventSport();
   fetchEventDate();
   fetchCategories();
 });
@@ -128,7 +129,7 @@ const padZero = (num) => String(num).padStart(2, '0'); // 두 자리로 변환
 
 const registEvent = function() {
   participation.value.userId = 1;
-  participation.value.eventId = selectedSport.value;
+  participation.value.eventId = selectedEvent.value;
   participation.value.detail = categories.value.find(c => c.id === selectedCategory.value)?.category || '';
   participation.value.memo = memo.value;
   participation.value.completionTime = `${padZero(completionTime.value.hour)}:${padZero(completionTime.value.minute)}:${padZero(completionTime.value.second)}`;
@@ -136,8 +137,6 @@ const registEvent = function() {
   
   pStore.registParticipation(participation.value);
 }
-
-
 </script>
 
 <template>
@@ -153,7 +152,7 @@ const registEvent = function() {
       <!-- 대회명 -->
       <div class="regist-list">
         <label for="select-event">대회:</label>
-        <select id="select-event" v-model="selectedSport">
+        <select id="select-event" v-model="selectedEvent">
           <option v-for="e in eStore.eventList" :key="e.id" :value="e.id">{{ e.eventName }}</option>
         </select>
       </div>
@@ -179,28 +178,22 @@ const registEvent = function() {
       <!-- 시는 0~23
         분, 초는 0~59 사이에서 선택할 수 있도록 selectbox -->
       <div class="regist-list" id="regist-completionTime">
-        
         <span>기록: </span>
-
         <div class="completionTime">
           <select v-model="completionTime.hour">
             <option v-for="h in 24" :key="h" :value="h-1">{{ h-1 }}</option>
-          </select>
-          시
+          </select> 시
         </div>
-      <div class="completionTime">
-
-        <select v-model="completionTime.minute">
-          <option v-for="m in 60" :key="m" :value="m-1">{{ m-1 }}</option>
-        </select>
-        분
-        </div>
+        <div class="completionTime">
+          <select v-model="completionTime.minute">
+            <option v-for="m in 60" :key="m" :value="m-1">{{ m-1 }}</option>
+          </select> 분
+          </div>
 
         <div class="completionTime">
-        <select v-model="completionTime.second">
-          <option v-for="s in 60" :key="s" :value="s-1">{{ s-1 }}</option>
-        </select>
-        초
+          <select v-model="completionTime.second">
+            <option v-for="s in 60" :key="s" :value="s-1">{{ s-1 }}</option>
+          </select> 초
         </div>
       </div>
       <!-- 메모 -->
@@ -284,7 +277,6 @@ const registEvent = function() {
   margin: 0 2x; /* 텍스트와 select 박스 사이 간격 */
   font-weight: normal;
   flex-wrap: wrap; /* 자식 요소가 부모 너비 초과 시 줄바꿈 */
-
 }
 
 
@@ -318,7 +310,7 @@ button {
   font-size: 16px;
   font-weight: bold;
   color: #ffffff;
-  background-color: #007bff;
+  background-color: #3094CA;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -376,4 +368,3 @@ fieldset {
 }
 
 </style>
-  

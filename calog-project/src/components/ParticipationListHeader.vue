@@ -190,10 +190,11 @@ function goToEventRegist() {
 
 
 .header-container button {
+  font-size: 14px;
   padding: 5px 20px;
   background-color: #3094CA;
   color: snow;
-  font-family: 'Do Hyeon', 'Jua';
+
   border: none;
   border-radius: 4px;
   cursor: pointer;

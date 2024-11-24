@@ -8,8 +8,9 @@ const EVENT_URL = `http://localhost:8080/api/event`;
 
 export const useParticipationStore = defineStore("participation", () => {
   const participationList = ref([]);
-  const participationDetail = ref({});
-  const participation = ref({});
+  const participationDetail = ref({}); // 세부대회정보 담을 객체
+  const participation = ref({}); 
+  const updatedData = ref({}); // 업데이트한 정보 전송
 
   // 1. 기본 참여 리스트 조회
   const getParticipationList = function () {
@@ -18,7 +19,7 @@ export const useParticipationStore = defineStore("participation", () => {
       method: "get",
     })
       .then((response) => {
-        console.log("getParticipation 가져오기 완료!🔥");
+        // console.log("getParticipation 가져오기 완료!🔥");
 
         participationList.value = response.data.map((item) => ({
           ...item,
@@ -35,7 +36,7 @@ export const useParticipationStore = defineStore("participation", () => {
             method: "get",
           })
             .then((eventResponse) => {
-              console.log("event 정보도 추가됨! 🙂");
+              // console.log("event 정보도 추가됨! 🙂");
               const isoDate = eventResponse.data.eventDate;
               const dateObj = new Date(isoDate);
               const formattedDate = `${dateObj.getFullYear()}-${String(
@@ -90,7 +91,7 @@ const fetchFilteredParticipationList = function (filters) {
   axios
     .get(url)
     .then((response) => {
-      console.log("필터링된 데이터 가져오기 성공! 🔥");
+      // console.log("필터링된 데이터 가져오기 성공! 🔥");
 
       // participationList 초기화 및 이벤트 정보 병합 준비
       participationList.value = response.data;
@@ -124,7 +125,7 @@ const fetchFilteredParticipationList = function (filters) {
 
       // 모든 이벤트 정보 병합이 완료된 후 콘솔 출력
       Promise.all(promises).then(() => {
-        console.log("병합된 participationList: ", participationList.value);
+        // console.log("병합된 participationList: ", participationList.value);
       });
     })
     .catch((error) => {
@@ -156,7 +157,8 @@ const fetchFilteredParticipationList = function (filters) {
       method: "get",
     })
       .then((response) => {
-        console.log("참여 상세 정보 가져오기 성공! 🔥");
+        // 여기부터 memo가 들어있지 않음
+        // console.log("참여 상세 정보 가져오기 성공! 🔥", response.data);
 
         participationDetail.value = response.data;
         const eventId = response.data.eventId;
@@ -169,7 +171,7 @@ const fetchFilteredParticipationList = function (filters) {
         return axios.get(`${EVENT_URL}/${eventId}`);
       })
       .then((eventResponse) => {
-        console.log("이벤트 상세 정보 가져오기 성공! 🙂");
+        // console.log("이벤트 상세 정보 가져오기 성공! 🙂");
 
         const eventData = eventResponse.data;
         const isoDate = eventData.eventDate;
@@ -193,6 +195,30 @@ const fetchFilteredParticipationList = function (filters) {
       });
   };
 
+    // 5. 참여 대회 상세 정보 업데이트
+    const updateParticipation = function(updatedData, id) {
+      axios ({
+        url: `/api/user/1/participation/${id}`,
+        method: 'patch',
+        data: updatedData, // 업데이트할 데이터
+      }) 
+      .then(() => {
+        console.log("updatedData: ", updatedData);
+        console.log("참여 대회 업데이트 성공! 🔃 ");
+        participationDetail.value = {
+          ...participationDetail, // 기존 정보 복사
+          ...updatedData,                // updatedData의 속성만 덮어쓰기
+        };
+        router.push({ name: 'list' });
+      })
+      .catch((error) => {
+        console.error("참여 대회 업데이트 실패 😞", error);
+      });
+    }
+
+    // 6. 참여 대회 삭제
+    // 삭제 이벤트 처리 (CardDetailBody에서 선언)
+
   return {
     participationList,
     getParticipationList,
@@ -201,5 +227,6 @@ const fetchFilteredParticipationList = function (filters) {
     participation,
     participationDetail,
     getParticipationDetail,
+    updateParticipation
   };
 });
