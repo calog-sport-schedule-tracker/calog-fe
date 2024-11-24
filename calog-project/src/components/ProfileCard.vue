@@ -2,19 +2,36 @@
   <div class="profile-card">
     <img :src="profile.image" alt="profile image" class="profile-img" />
     <div class="profile-info">
-      <h1>{{ profile.name }}</h1>
-      <p class="profile-detail">{{ profile.details }}</p>
+      <h1>{{ uStore.nickname }}</h1>
+      <p class="profile-detail" >{{ dynamicDetail }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useUserStore } from "@/stores/user";
 import profileImage from "@/assets/profile.jpg";
+
+const uStore = useUserStore();
+
+console.log("uStore.userId: ", uStore.userId);
 const profile = ref({
   image: profileImage,
-  name: "짱우",
+  // name: "짱우",
   details: "마라톤을 좋아하는 개발자 💻",
+});
+
+// userId에 따라 동적으로 세부 정보를 설정
+const dynamicDetail = computed(() => {
+  if (uStore.userId == 1) {
+    return "마라톤을 좋아하는 개발자 💻";
+  } else if (uStore.userId == 2) {
+    return "언젠간 마라톤 풀코스 🏃🏻‍♀️";
+  } else {
+    console.log(uStore.id);
+    return "프로필 정보를 설정해주세요! 😄";
+  }
 });
 </script>
 
