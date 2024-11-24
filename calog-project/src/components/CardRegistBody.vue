@@ -75,7 +75,7 @@ const fetchEventDate = () => {
   if (!selectedEvent.value) return;
   axios.get(`http://localhost:8080/api/detail/${selectedEvent.value}`)
     .then((response) => {
-      console.log("된다!")
+      console.log("categories 가져오기 된다!")
       console.log(response.data);
       categories.value = response.data; // categories 데이터 설정
       // console.log(categories.value);
