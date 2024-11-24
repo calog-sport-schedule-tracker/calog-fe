@@ -13,7 +13,7 @@ defineProps({
 <style scoped>
 /* 이벤트 팝업창의 헤더 제목 */
 .card-header>h1 {
-  background-color: #00A1F1;
+  background-color: #3094CA;
   color: white;
   padding: 10px;
   border-top-left-radius: 10px;

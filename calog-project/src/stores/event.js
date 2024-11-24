@@ -14,7 +14,7 @@ export const useEventStore = defineStore('event', () => {
         })
           .then((response) => {
             console.log("getEvent 가져오기 완료!🔥");
-            console.log(response.data);
+            console.log("데이터 ⭐️ ", response.data);
             eventList.value = response.data;
           })
    
