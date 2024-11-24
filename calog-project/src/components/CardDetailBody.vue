@@ -13,7 +13,7 @@ const pStore = useParticipationStore();
 
 const images = import.meta.glob('@/assets/sport-image/*.jpg', { eager: true });
 
-const getImageSrc = (sport) => {
+const getImageSrc = (eventId, sport) => {
   const sportMapping = {
     '마라톤': 'marathon',
     '그랑폰도': 'granfondo',
@@ -21,10 +21,21 @@ const getImageSrc = (sport) => {
     '테니스': 'tennis',
     '배드민턴': 'badminton',
   };
-
+  const userEventImagePath = `/src/assets/sport-image/1_${eventId}.jpg`;
   const englishSportName = sportMapping[sport] || 'default';
-  const imagePath = `/src/assets/sport-image/${englishSportName}.jpg`; // glob에서의 키 경로와 일치
-  return images[imagePath]?.default || images['/src/assets/sport-image/default.jpg'].default;
+  const sportImagePath = `/src/assets/sport-image/${englishSportName}.jpg`;
+
+  // 이미지 반환 로직
+  if (images[userEventImagePath]) {
+    console.log("사용자 이벤트 이미지:", userEventImagePath);
+    return images[userEventImagePath].default;
+  } else if (images[sportImagePath]) {
+    console.log("종목 이미지:", sportImagePath);
+    return images[sportImagePath].default;
+  } else {
+    console.log("기본 이미지 사용");
+    return images['/src/assets/sport-image/default.jpg'].default;
+  }
 };
 
 // API 호출
@@ -32,8 +43,6 @@ onMounted(()=> {
   pStore.getParticipationDetail(id);
   console.log("디테일 정보: ", pStore.getParticipationDetail);
 })
-
-
 
 // 삭제 이벤트 처리
 const deleteParticipation = () => {
@@ -49,14 +58,13 @@ const deleteParticipation = () => {
       });
   }
 };
-
 </script>
 
 <template>
   <CardDetailHeader :eventName="pStore.participationDetail.eventName"/>
   <div class="card-body">
     <div class="card-body-left">
-      <img :src="getImageSrc(pStore.participationDetail.sport)" :alt="pStore.participationDetail.sport">
+      <img :src="getImageSrc(pStore.participationDetail.eventId, pStore.participationDetail.sport)" :alt="pStore.participationDetail.sport">
     </div>
 
     <div class="card-body-right">
@@ -68,8 +76,6 @@ const deleteParticipation = () => {
         <p><strong>메모:</strong> {{ pStore.participationDetail.memo }}</p>
       </div>
       <div class="detail-footer">
-        <button @click="$router.back()" class="material-symbols-outlined">arrow_back</button>
-        <button @click="updateParticipation" class="material-symbols-outlined">edit</button>
         <button @click="deleteParticipation" class="material-symbols-outlined">delete</button>
       </div>
 
@@ -77,16 +83,16 @@ const deleteParticipation = () => {
   </div>
 </template>
 
-<script>
-function formatDate(isoDate) {
-  if (!isoDate) return "정보 없음"; // 빈 값 처리
-  const date = new Date(isoDate);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-</script>
+// <script>
+// function formatDate(isoDate) {
+//   if (!isoDate) return "정보 없음"; // 빈 값 처리
+//   const date = new Date(isoDate);
+//   const year = date.getFullYear();
+//   const month = String(date.getMonth() + 1).padStart(2, "0");
+//   const day = String(date.getDate()).padStart(2, "0");
+//   return `${year}-${month}-${day}`;
+// }
+// </script>
 
 <style scoped>
 
@@ -150,7 +156,7 @@ function formatDate(isoDate) {
 /* 돌아가기 버튼 */
 button {
   padding: 10px 20px;
-  background-color: #fff; /* 밝은 회색 */
+  background-color: #f9f9f9; /* 밝은 회색 */
   color: #495057; /* 짙은 회색 */
   border: none;
   border-radius: 4px;
@@ -161,25 +167,7 @@ button:hover {
   background-color: #ced4da; /* 약간 어두운 회색 */
 }
 
-/* 수정 버튼 */
-.update-button {
-  margin-left: 10px;
-  background-color: #6c757d; /* 부드러운 파란-회색 */
-  color: #ffffff; /* 흰색 글씨 */
-}
-
-.update-button:hover {
-  background-color: #5a6268; /* 더 짙은 파란-회색 */
-}
-
-/* 삭제 버튼 */
-.delete-button {
-  margin-left: 10px;
-  background-color: #b23c17; /* 부드러운 갈색/와인색 */
-  color: #ffffff; /* 흰색 글씨 */
-}
-
-.delete-button:hover {
-  background-color: #922e10; /* 더 짙은 와인색 */
+.material-symbols-outlined {
+  font-size: 26px;
 }
 </style>

@@ -24,7 +24,7 @@ body {
 }
 
 .head {
-  background-color: #F7F7F7;
+  background-color: #f6f8fa; /* Github  */
   height: 2.5em;
   padding: 10px;
 }
@@ -48,8 +48,7 @@ body {
 .menu {
   display: flex;
   align-items: center;
-  gap: 20px;
-
+  gap: 30px;
 }
 
 .menu a {

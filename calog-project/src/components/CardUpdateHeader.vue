@@ -1,10 +1,9 @@
 <template>
   <div class="card-header">
     <div class="detail-event-name">
-      <h1>{{ eventName }}</h1>
+      <h1>[수정] {{ eventName }} </h1>
     </div>
     <div class="detail-function">
-        <button @click="goToUpdateParticipation" class="material-symbols-outlined">edit</button>
         <button @click="$router.back()" class="material-symbols-outlined">arrow_back</button>
       </div>
   </div>
@@ -20,10 +19,6 @@ defineProps({
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id; // URL의 :id를 통해 가져옴
-
-const goToUpdateParticipation = () => {
-  router.push(`/participation-update/${id}`); // 해당 경로로 이동
-};
 
 </script>
 

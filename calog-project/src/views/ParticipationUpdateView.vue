@@ -1,16 +1,17 @@
 <script setup>
-import CardDetailBody from "@/components/CardDetailBody.vue";
+import CardUpdateBody from "@/components/CardUpdateBody.vue";
+import CardUpdateHeader from "@/components/CardUpdateHeader.vue";
 </script>
 
 <template>
   <!-- 참가 대회 등록 뷰 -->
-  <div class="card-detail-container">
-    <CardDetailBody />
+  <div class="card-update-container">
+    <CardUpdateBody />
   </div>
 </template>
 
 <style scoped>
-.card-detail-container {
+.card-update-container {
   /* 페이지 외부 여백 추가 */
   margin: 50px auto;  /* 원하는 바깥 여백 크기로 조정 */
   padding: 0; /* 내부 여백 추가 */
@@ -21,6 +22,5 @@ import CardDetailBody from "@/components/CardDetailBody.vue";
   width: 75%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 부드러운 그림자 효과 */
 }
-
 
 </style>
