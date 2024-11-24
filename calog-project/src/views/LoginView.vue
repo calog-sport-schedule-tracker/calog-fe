@@ -1,14 +1,19 @@
 <script setup>
 import { ref } from "vue";
 import { useUserStore } from "@/stores/user"; // Pinia 스토어 가져오기
+import { useRouter } from "vue-router";
 
 const userStore = useUserStore(); // 스토어 인스턴스
-
+const router = useRouter();
 const id = ref("");
 const password = ref("");
 
 const handleSubmit = () => {
   userStore.login(id.value, password.value);
+};
+
+const handleJoin = () => {
+  router.push("/join"); // '/join' 경로로 이동
 };
 </script>
 
@@ -26,6 +31,8 @@ const handleSubmit = () => {
       </div>
       <button type="submit" class="login-button">Login</button>
     </form>
+    <button @click="handleJoin" class="join-button">Join</button>
+
   </div>
 </template>
 
@@ -78,9 +85,10 @@ img {
   box-shadow: 0 0 5px rgba(87, 160, 245, 0.3);
 }
 
-.login-button {
+button {
   width: 100%;
   padding: 0.8rem;
+  margin-bottom: 1rem;
   font-size: 1rem;
   background-color: #43A5FF;
   color: #fff;
@@ -90,11 +98,15 @@ img {
   transition: background-color 0.3s;
 }
 
-.login-button:hover {
+button:hover {
   background-color: #43A5FF;
 }
 
-.login-button:active {
+button:active {
   background-color: #43A5FF;
+}
+
+.join-button {
+  width: 300px;
 }
 </style>
