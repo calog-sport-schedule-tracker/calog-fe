@@ -18,7 +18,7 @@ const handleJoin = () => {
   const payload = {
     nickname: nickname.value,
     userId: id.value,
-    password: password.value,
+    userPw: password.value,
   };
 
   // Pinia 스토어의 join 메서드 호출

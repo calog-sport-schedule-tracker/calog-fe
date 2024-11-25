@@ -21,7 +21,10 @@ const categories = ref([]);
 
 // 세부 종목 데이터를 가져오는 함수
 const fetchCategories = (eventId) => {
-  if (!eventId) return;
+  if (!eventId) {
+    console.log("eventId false");
+    return;
+  }
   axios
     .get(`http://localhost:8080/api/detail/${eventId}`)
     .then((response) => {
@@ -100,11 +103,11 @@ onMounted(() => {
     };
     console.log("detail.detail: ", detail.detail);
     // 세부 종목 로드
-    fetchCategories(detail.value);
+    fetchCategories(detail.id);
 
     // 선택된 카테고리 초기화
-    // selectedCategory.value = detail.detail || "";
-    selectedCategory.value = categories.value.find(c=>c.category === participationDetail.detail)?.id || "";
+    selectedCategory.value = detail.detail || "";
+    // selectedCategory.value = categories.value.find(c=>c.category === participationDetail.detail)?.id || "";
   } else {
     console.error("참여 상세 정보를 가져올 수 없습니다.");
   }
