@@ -1,11 +1,13 @@
 <template>
   <div class="profile-card">
-    <img :src="profile.image" alt="profile image" class="profile-img" />
     <div class="profile-info">
+      <img :src="profile.image" alt="profile image" class="profile-img" />
       <h1>{{ uStore.nickname }}</h1>
       <p class="profile-detail" >{{ dynamicDetail }}</p>
     </div>
-    <Chart/>
+    <div class="chart-view">
+      <Chart/>
+    </div>
   </div>
 </template>
 
@@ -43,7 +45,7 @@ const dynamicDetail = computed(() => {
   flex-direction: column;
   align-items: center;
   border-radius: 8px; /* 둥근 모서리 추가 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  box-shadow: 0 4px 6px rgba(0.1, 0.1, 0.1, 0.2); /* 그림자 효과 */
   padding: 12px;
   background-color: #fff; /* 배경색 */
   flex-grow: 1;
@@ -51,8 +53,8 @@ const dynamicDetail = computed(() => {
 }
 
 .profile-img {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 10%; /* 이미지를 원형으로 */
   margin-bottom: 10px;
 }
@@ -73,6 +75,9 @@ const dynamicDetail = computed(() => {
 .profile-detail {
 
   font-size: 16px; 
+}
 
+.chart-view {
+  margin-top: 100px;
 }
 </style>
