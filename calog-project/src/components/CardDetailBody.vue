@@ -72,7 +72,7 @@ const deleteParticipation = () => {
         <p><strong>대회:</strong> {{ pStore.participationDetail.eventName }}</p>
         <p><strong>일정:</strong> {{ pStore.participationDetail.eventDate }}</p>
         <p><strong>종목:</strong> {{ pStore.participationDetail.sport }}</p>
-        <p><strong>세부:</strong> {{ pStore.participationDetail.detail }}</p>
+        <p v-show="pStore.participationDetail.detail"><strong>세부:</strong> {{ pStore.participationDetail.detail }}</p>
         
         <p v-show="pStore.participationDetail.completionTime "><strong>기록:</strong> {{ pStore.participationDetail.completionTime }}</p>
         <p v-show="pStore.participationDetail.ranking"><strong>순위:</strong> {{pStore.participationDetail.ranking}}위 </p>
