@@ -39,6 +39,10 @@ const handleJoin = () => {
         <input v-model="nickname" type="text" id="nickname" required />
       </div>
       <div class="input-group">
+        <label for="email">id</label>
+        <input v-model="id" type="text" id="id" required />
+      </div>
+      <div class="input-group">
         <label for="password">Password</label>
         <input v-model="password" type="password" id="password" required />
       </div>

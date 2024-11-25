@@ -48,7 +48,7 @@ img {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f9f9f9;
+  background-color: white;
 }
 
 .login-form {

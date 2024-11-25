@@ -24,7 +24,7 @@
           <option value="제주">제주</option>
         </select>
 
-      <!-- 종목 필터 -->
+        <!-- 종목 필터 -->
         <label for="sport-select">종목:</label>
         <select id="sport-select" v-model="selectedSport">
           <option value="">모든 종목</option>
@@ -37,12 +37,12 @@
 
         <button @click="fetchFilteredEvents">조회</button>
       </div>
-      <!-- 필터 끝-->
+      <!-- 필터 끝 -->
 
       <!-- FullCalendar -->
-      <FullCalendar :options="calendarOptions" class/>
+      <FullCalendar :options="calendarOptions" class />
     </div>
-    <!-- 특정 대회 클릭 시 모달 창으로 상세 페이지 이동 처리 용-->
+    <!-- 특정 대회 클릭 시 모달 창으로 상세 페이지 이동 처리 용 -->
     <EventModal v-if="isModalVisible" :event="selectedEvent" @close="closeModal" />
   </div>
 </template>
@@ -69,8 +69,8 @@ export default {
       },
       isModalVisible: false,
       selectedEvent: null,
-      selectedCity: "", 
-      selectedSport: "", 
+      selectedCity: "",
+      selectedSport: "",
     };
   },
   methods: {
@@ -79,7 +79,6 @@ export default {
       axios
         .get("/api/event")
         .then((response) => {
-          console.log("전체 대회 데이터:", response.data); // 디버깅용 로그
           this.updateCalendarEvents(response.data);
         })
         .catch((error) => {
@@ -89,76 +88,72 @@ export default {
     // 필터링된 이벤트 가져오기
     fetchFilteredEvents() {
       if (this.selectedCity && this.selectedSport) {
-        // 지역 + 종목 필터링 (오류 로그 추가했음)
         axios
           .get("/api/event/sportCity", {
             params: { city: this.selectedCity, sport: this.selectedSport },
           })
           .then((response) => {
-            console.log("스포츠 + 도시 필터링", response.data);
             this.updateCalendarEvents(response.data);
           })
           .catch((error) => {
-            console.error("스포츠 + 도시 필터링 오류", error);
+            console.error("스포츠 + 도시 필터링 오류:", error);
           });
       } else if (this.selectedCity) {
-        // 지역 필터링 (오류 로그 추가함)
         axios
           .get("/api/event/city", { params: { city: this.selectedCity } })
           .then((response) => {
-            console.log("도시 필터링", response.data);
             this.updateCalendarEvents(response.data);
           })
           .catch((error) => {
-            console.error("도시 필터링 오류", error);
+            console.error("도시 필터링 오류:", error);
           });
       } else if (this.selectedSport) {
-        // 종목'만' 필터링
         axios
           .get("/api/event/sport", { params: { sport: this.selectedSport } })
           .then((response) => {
-            console.log("스포츠 필터링 응답:", response.data);
             this.updateCalendarEvents(response.data);
           })
           .catch((error) => {
             console.error("스포츠 필터링 오류:", error);
           });
       } else {
-        // 필터링 없이 전체 조회
         this.fetchEvents();
       }
     },
     // FullCalendar에 이벤트 업데이트
     updateCalendarEvents(events) {
-      if (!Array.isArray(events)) {
-        console.error("조회 데이터 비어있음", events);
-        events = []; // 기본값으로 빈 배열 설정
-      }
       const formattedEvents = events.map((event) => ({
         id: event.id,
         title: `${event.eventName} - ${event.city}`,
         start: event.eventDate,
         end: event.eventDate,
       }));
-      console.log("포맷된 이벤트", formattedEvents); // 디버깅용 로그
       this.calendarOptions = {
         ...this.calendarOptions,
         events: formattedEvents,
       };
     },
-    // 이벤트 클릭 시 모달 열기
     handleEventClick(info) {
-      const eventId = info.event.id;
-      axios
-        .get(`/api/event/${eventId}`)
-        .then((response) => {
-          this.selectedEvent = response.data;
-          this.isModalVisible = true;
-        })
-        .catch((error) => {
-          console.error("이벤트 상세 정보 조회 오류", error);
-        });
-    },
+  const eventId = info.event.id;
+  console.log("클릭한 이벤트 ID:", eventId); // 디버깅용
+  axios
+    .get(`/api/event/${eventId}`) // 이벤트 기본 정보 요청
+    .then((response) => {
+      console.log("이벤트 기본 정보:", response.data); // 디버깅용
+      this.selectedEvent = response.data;
+      return axios.get(`/api/detail/${eventId}`); 
+    })
+    .then((response) => {
+      console.log("Detail 정보:", response.data); 
+      this.selectedEvent.details = response.data; 
+      this.isModalVisible = true; 
+    })
+    .catch((error) => {
+      console.error("이벤트 또는 Detail 정보 조회 오류:", error);
+      console.error("요청 URL:", `/api/detail/${eventId}`);
+    });
+},
+
     // 모달 닫기
     closeModal() {
       this.isModalVisible = false;
@@ -166,10 +161,11 @@ export default {
     },
   },
   mounted() {
-    this.fetchEvents(); // 첫 페이지 (필터링 걸지않은 모든 대회 조회용)
+    this.fetchEvents();
   },
 };
 </script>
+
 
 <style scoped>
 
@@ -303,7 +299,4 @@ export default {
   background-color: #e8f4fc; /* 호버 시 배경색 */
 }
 
-
-
 </style>
-

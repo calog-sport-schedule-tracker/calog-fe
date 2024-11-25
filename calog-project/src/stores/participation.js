@@ -212,6 +212,7 @@ const fetchFilteredParticipationList = function (filters) {
         };
         participationDetail.value.detail = updatedData.value;
 
+
     
         console.log("갱신된 participationList: ", participationList.value);
         router.push({ name: 'list' }); // 목록 화면으로 이동
