@@ -11,7 +11,7 @@ const userStore = useUserStore(); // user 스토어 사용
 
 const handleJoin = () => {
   if (password.value !== confirmPassword.value) {
-    alert('비밀번호가 일치하지 않습니다. 다시 시도하세요!');
+    alert('비밀번호가 일치하지 않습니다.');
     return;
   }
 
@@ -28,8 +28,8 @@ const handleJoin = () => {
 
 <template>
   <div class="join-container">
-    <!-- <img src="../assets/logo.png" alt="calog" /> -->
     <form @submit.prevent="handleJoin" class="join-form">
+      <h1>Join to Calog</h1>
       <div class="input-group">
         <label for="id">Id</label>
         <input v-model="id" type="text" id="id" required />
@@ -48,11 +48,13 @@ const handleJoin = () => {
       </div>
       <button type="submit" class="join-button">Join</button>
     </form>
+    <p class="login-callout">
+      Already have an account? <a @click.prevent="$router.push('/login')" class="login-button">Log in</a>
+    </p>
   </div>
 </template>
 
 <style scoped>
-/* 기존 CSS 유지 */
 img {
   width: 20%;
 }
@@ -62,62 +64,91 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: white;
   height: calc(100vh - 60px);
+  background-color: white;
 }
 
 .join-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 300px;
+  width: 400px;
+  padding: 30px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  /* background-color: #f6f8fa; */
+}
+
+.join-form h1 {
+  padding-bottom: 10px;
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  color: #24292e;
 }
 
 .input-group {
-  width: 120%;
-  margin: 0.7rem 0;
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
 .input-group label {
   display: block;
   font-size: 0.9rem;
-  color: rgba(0, 0, 0, 0.873);
+  color: #888;
   margin-bottom: 0.5rem;
 }
 
 .input-group input {
   width: 100%;
   padding: 0.8rem;
-  font-size: 0.7rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  height: 60%;
+  font-size: 14px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
   outline: none;
   box-sizing: border-box;
 }
 
 .input-group input:focus {
-  border-color: #43a5ff;
-  box-shadow: 0 0 5px rgba(67, 165, 255, 0.3);
+  border-color: #0969da;
+  box-shadow: 0 0 5px rgba(87, 160, 245, 0.3);
 }
 
-.join-button {
-  width: 120%;
+button {
+  width: 100%;
   padding: 0.8rem;
+  margin-bottom: 1rem;
   font-size: 1rem;
-  background-color: #43a5ff;
+  background-color: #43A5FF;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-top: 0.8rem;
 }
 
-.join-button:hover {
-  background-color: #258ef0;
+button:hover {
+  background-color: #43A5FF;
 }
 
-.join-button:active {
-  background-color: #0373db;
+button:active {
+  background-color: #43A5FF;
+}
+
+.login-button {
+  color: #0969da;
+  text-decoration: none;
+}
+
+.login-button:hover {
+  text-decoration: underline;
+}
+
+.login-callout {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #57606a;
 }
 </style>

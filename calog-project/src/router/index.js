@@ -41,6 +41,22 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView,
+      beforeEnter: (to, from, next) => {
+        const uStore = useUserStore();
+        if (uStore.userId) {
+          if (confirm("이미 로그인되어 있습니다. 로그아웃하시겠습니까?")) {
+            // 사용자가 '확인'을 눌렀을 때
+            alert("로그아웃되었습니다.");
+            uStore.userId = null; // 실제 로그아웃 처리를 위해 userId를 null로 설정
+            next({ name: 'login' }); // 로그인 페이지로 리다이렉트
+          } else {
+            // 사용자가 '취소'를 누른 경우, 현재 페이지에 그대로 머무름
+            next(false); // false를 전달하여 현재의 네비게이션을 취소
+          }
+        } else {
+          next(); // 로그인이 되어 있지 않은 경우, 로그인 페이지로 계속 진행
+        }
+      }
     },
     {
       path: '/join',

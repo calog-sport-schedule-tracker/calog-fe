@@ -29,6 +29,13 @@
   margin: 0;
 }
 
+
+.card-regist-name {
+  padding-left: 20px;
+  display: flex; 
+  align-items: center; 
+}
+
 .card-header {
   display: flex;
   justify-content: space-between;

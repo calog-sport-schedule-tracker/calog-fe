@@ -299,4 +299,15 @@ textarea {
   box-sizing: border-box; /* 패딩 포함 크기 계산 */
   width: 100%;
 }
+
+#memo {
+  width: 690px;
+  height: 100px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none; /* 사용자가 크기를 조정하지 못하도록 설정 */
+  box-sizing: border-box;
+}
 </style>

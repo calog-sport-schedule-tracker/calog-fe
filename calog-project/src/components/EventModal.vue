@@ -191,13 +191,10 @@ export default {
 
 
 .modal-content img {
-  max-width: 100%;
-  height: auto;
+  width: 80%;
+  height: 80%;
   border-radius: 8px;
   margin: 20px;
-  margin-left: 40px;
-  margin-right: 40px;
-  margin-bottom: 40px;
 }
 
 .close-button {
