@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 
 const nickname = ref('');
-const email = ref('');
+const id = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 
@@ -24,8 +24,8 @@ const handleRegister = () => {
         <input v-model="nickname" type="text" id="nickname" required />
       </div>
       <div class="input-group">
-        <label for="email">E-mail</label>
-        <input v-model="email" type="email" id="email" required />
+        <label for="email">id</label>
+        <input v-model="id" type="text" id="id" required />
       </div>
       <div class="input-group">
         <label for="password">Password</label>
