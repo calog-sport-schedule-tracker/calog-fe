@@ -7,6 +7,7 @@ import ThumbnailView from '@/views/ThumbnailView.vue'
 import EventRegistView from '@/views/EventRegistView.vue'
 import ParticipationDetailView from '@/views/ParticipationDetailView.vue'
 import ParticipationUpdateView from '@/views/ParticipationUpdateView.vue'
+import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,9 +24,18 @@ const router = createRouter({
     },
 
     {
-        path: '/list',
-        name: 'list',
-        component: ParticipationListView,
+      path: '/list',
+      name: 'list',
+      component: ParticipationListView,
+      beforeEnter: (to, from, next) => {
+        const uStore = useUserStore();
+        if (!uStore.userId) {
+          alert("로그인이 필요합니다.");
+          next({ name: 'login' });
+        } else {
+          next();
+        }
+      }
     },
     {
       path: '/login',

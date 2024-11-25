@@ -73,6 +73,7 @@ img {
 .input-group input {
   width: 100%;
   padding: 0.8rem;
+  height: 60%;
   font-size: 0.7rem;
   border: 1px solid #ccc;
   border-radius: 5px;
