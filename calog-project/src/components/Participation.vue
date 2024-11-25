@@ -52,7 +52,15 @@ function goToDetail(id) {
 
         <div class="list-item">
           <div class="list-title">기록</div>
-          <div class="list-content">{{ list.completionTime }}</div>
+          <div v-if="list.completionTime" class="list-content" >{{ list.completionTime }}</div>
+          <div v-else class="list-content" ></div>
+
+        </div>
+
+        <div class="list-item">
+          <div class="list-title">순위</div>
+          <div v-if="list.ranking" class="list-content">{{ list.ranking }}</div>
+          <div v-else class="list-content"></div>
         </div>
 
         <div class="list-item" id="pictogram">
@@ -132,6 +140,10 @@ function goToDetail(id) {
 #pictogram .material-symbols-outlined {
   font-size: 40px; /* 아이콘 크기 조정 */
   color: #555; /* 아이콘 색상 */
+}
+
+.list-content {
+  min-height: 20px; /* 다른 list-content와 동일한 최소 높이 설정 */
 }
 
 </style>

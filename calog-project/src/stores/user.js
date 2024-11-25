@@ -25,7 +25,7 @@ export const useUserStore = defineStore("user", () => {
         alert(`${userNickname}님, 반갑습니다!`);
 
         // 캘린더 페이지로 이동
-        router.push({ name: "calendar" });
+        router.push({ name: "list" });
       })
       .catch((error) => {
         const errorMessage = error.response?.data?.message || "로그인 실패";

@@ -5,6 +5,7 @@
       <h1>{{ uStore.nickname }}</h1>
       <p class="profile-detail" >{{ dynamicDetail }}</p>
     </div>
+    <Chart/>
   </div>
 </template>
 
@@ -12,6 +13,7 @@
 import { ref, computed } from "vue";
 import { useUserStore } from "@/stores/user";
 import profileImage from "@/assets/profile.jpg";
+import Chart from "./Chart.vue";
 
 const uStore = useUserStore();
 

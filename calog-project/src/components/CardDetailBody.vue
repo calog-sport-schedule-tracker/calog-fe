@@ -73,7 +73,9 @@ const deleteParticipation = () => {
         <p><strong>일정:</strong> {{ pStore.participationDetail.eventDate }}</p>
         <p><strong>종목:</strong> {{ pStore.participationDetail.sport }}</p>
         <p><strong>세부:</strong> {{ pStore.participationDetail.detail }}</p>
-        <p><strong>기록:</strong> {{ pStore.participationDetail.completionTime }}</p>
+        
+        <p v-show="pStore.participationDetail.completionTime "><strong>기록:</strong> {{ pStore.participationDetail.completionTime }}</p>
+        <p v-show="pStore.participationDetail.ranking"><strong>순위:</strong> {{pStore.participationDetail.ranking}}위 </p>
         <p><strong>메모:</strong> {{ pStore.participationDetail.memo }}</p>
       </div>
       <div class="detail-footer">
@@ -83,17 +85,6 @@ const deleteParticipation = () => {
     </div>
   </div>
 </template>
-
-// <script>
-// function formatDate(isoDate) {
-//   if (!isoDate) return "정보 없음"; // 빈 값 처리
-//   const date = new Date(isoDate);
-//   const year = date.getFullYear();
-//   const month = String(date.getMonth() + 1).padStart(2, "0");
-//   const day = String(date.getDate()).padStart(2, "0");
-//   return `${year}-${month}-${day}`;
-// }
-// </script>
 
 <style scoped>
 
