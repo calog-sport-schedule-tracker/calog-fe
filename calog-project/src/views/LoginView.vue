@@ -21,6 +21,7 @@ const handleJoin = () => {
   <div class="login-container">
     <!-- <img src="../assets/logo.png" alt="calog"> -->
     <form @submit.prevent="handleSubmit" class="login-form">
+      <h1>Login to Calog</h1>
       <div class="input-group">
         <label for="id">Id</label>
         <input v-model="id" type="text" id="id" required />
@@ -31,7 +32,11 @@ const handleJoin = () => {
       </div>
       <button type="submit" class="login-button">Login</button>
     </form>
-    <button @click="handleJoin" class="join-button">Join</button>
+
+    <!-- 계정 생성(회원가입) -->
+    <p class="join-callout">
+      New to Calog? <a @click.prevent="handleJoin" class="join-button">Create an accout</a>
+    </p>
 
   </div>
 </template>
@@ -55,7 +60,21 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 300px;
+  width: 400px;
+  padding: 30px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  /* background-color: #f6f8fa; */
+
+}
+
+.login-form h1 {
+  padding-bottom: 30px;
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 16px;
+  color: #24292e;
 }
 
 .input-group {
@@ -74,17 +93,18 @@ img {
   width: 100%;
   padding: 0.8rem;
   height: 60%;
-  font-size: 0.7rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  font-size: 14px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
   outline: none;
   box-sizing: border-box;
 }
 
 .input-group input:focus {
-  border-color: #43A5FF;
+  border-color: #0969da;
   box-shadow: 0 0 5px rgba(87, 160, 245, 0.3);
 }
+
 
 button {
   width: 100%;
@@ -109,5 +129,20 @@ button:active {
 
 .join-button {
   width: 300px;
+}
+
+.join-callout {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #57606a;
+}
+
+.join-callout a {
+  color: #0969da;
+  text-decoration: none;
+}
+
+.join-callout a:hover {
+  text-decoration: underline;
 }
 </style>

@@ -36,9 +36,10 @@ onMounted(() => {
 }
 
 .logo {
-  width: 300px;
+  width: 320px;
   height: auto;
   margin-bottom: 4rem;
+  animation: bounce 2s 2; /* 4초 동안 한 번만 실행 */
 }
 
 .description {
@@ -53,5 +54,20 @@ onMounted(() => {
 .description.visible {
   opacity: 1; /* 텍스트가 보이는 상태 */
   color: rgba(173, 181, 189, 1); /* 완전히 밝아진 색상 */
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-60px);
+  }
+  60% {
+    transform: translateY(-30px);
+  }
+  90% {
+    transform: translateY(-10px); /* 마지막 튀는 크기를 줄임 */
+  }
 }
 </style>

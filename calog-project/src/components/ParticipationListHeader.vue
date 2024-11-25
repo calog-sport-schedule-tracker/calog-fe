@@ -10,7 +10,7 @@ const router = useRouter();
 const selectedCity = ref('');
 const selectedSport = ref('');
 const selectedDate = ref(''); // 날짜 필터 추가
-
+const selectedOrder = ref(''); // 정렬 (시간순, 최신순)
 onMounted(() => {
   const datePicker = document.querySelector('#date-picker');
   flatpickr(datePicker, {
@@ -38,24 +38,50 @@ function fetchFilteredEvents() {
   const cityParam = selectedCity.value ? `city=${selectedCity.value}` : '';
   const sportParam = selectedSport.value ? `sport=${selectedSport.value}` : '';
   const dateParam = selectedDate.value ? `eventDate=${selectedDate.value}` : '';
+  const orderParam = selectedOrder.value === '최신순' ? '2' : ''; // 최신순일 경우 '2', 시간순은 빈 값
 
   let url = `/api/user/1/participation`;
 
-  if (cityParam && sportParam && dateParam) {
-    url = `/api/user/1/participation/sportDateCity?${sportParam}&${dateParam}&${cityParam}`;
-  } else if (cityParam && sportParam) {
-    url = `/api/user/1/participation/sportCity?${sportParam}&${cityParam}`;
-  } else if (cityParam && dateParam) {
-    url = `/api/user/1/participation/dateCity?${dateParam}&${cityParam}`;
-  } else if (sportParam && dateParam) {
-    url = `/api/user/1/participation/sportDate?${sportParam}&${dateParam}`;
-  } else if (cityParam) {
-    url = `/api/user/1/participation/city?${cityParam}`;
-  } else if (sportParam) {
-    url = `/api/user/1/participation/sport?${sportParam}`;
-  } else if (dateParam) {
-    url = `/api/user/1/participation/date?${dateParam}`;
+  if (orderParam==2) {
+    if (cityParam && sportParam && dateParam) {
+      url = `/api/user/1/participation/sportDateCity2?${sportParam}&${dateParam}&${cityParam}`;
+    } else if (cityParam && sportParam) {
+      url = `/api/user/1/participation/sportCity2?${sportParam}&${cityParam}`;
+    } else if (cityParam && dateParam) {
+      url = `/api/user/1/participation/dateCity2?${dateParam}&${cityParam}`;
+    } else if (sportParam && dateParam) {
+      url = `/api/user/1/participation/sportDate2?${sportParam}&${dateParam}`;
+    } else if (cityParam) {
+      url = `/api/user/1/participation/city2?${cityParam}`;
+    } else if (sportParam) {
+      url = `/api/user/1/participation/sport2?${sportParam}`;
+    } else if (dateParam) {
+      url = `/api/user/1/participation/date2?${dateParam}`;
+    } else {
+      url = `/api/user/1/participation2`;
+    }
+  } else {
+    if (cityParam && sportParam && dateParam) {
+      url = `/api/user/1/participation/sportDateCity?${sportParam}&${dateParam}&${cityParam}`;
+    } else if (cityParam && sportParam) {
+      url = `/api/user/1/participation/sportCity?${sportParam}&${cityParam}`;
+    } else if (cityParam && dateParam) {
+      url = `/api/user/1/participation/dateCity?${dateParam}&${cityParam}`;
+    } else if (sportParam && dateParam) {
+      url = `/api/user/1/participation/sportDate?${sportParam}&${dateParam}`;
+    } else if (cityParam) {
+      url = `/api/user/1/participation/city?${cityParam}`;
+    } else if (sportParam) {
+      url = `/api/user/1/participation/sport?${sportParam}`;
+    } else if (dateParam) {
+      url = `/api/user/1/participation/date?${dateParam}`;
+    } else
+      url = `/api/user/1/participation`;
   }
+
+
+  console.log("orderParam: ", orderParam);
+  console.log(url);
 
   const participationStore = useParticipationStore();
 
@@ -116,6 +142,12 @@ function goToEventRegist() {
 
 <template>
     <div class="header-container">
+      <!-- 정렬 필터 -->
+      <label for="sport-select">정렬:</label>
+      <select id="sport-select" v-model="selectedOrder">
+        <option value="">시간순</option>
+        <option value="최신순">최신순</option>
+      </select>
       <!-- 지역 필터 -->
       <label for="city-select">지역:</label>
       <select id="city-select" v-model="selectedCity">
@@ -147,9 +179,11 @@ function goToEventRegist() {
         <option value="그랑폰도">그랑폰도</option>
       </select>
 
-         <!-- 날짜 필터 -->
+      <!-- 날짜 필터 -->
       <label for="date-picker">날짜:</label>
       <input id="date-picker" type="text" placeholder="선택된 날짜" readonly />
+
+
 
       <button class="filterBtn" @click="fetchFilteredEvents">조회</button>
       <button class="registBtn" @click="goToEventRegist" >기록하기</button>
