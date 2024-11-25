@@ -3,14 +3,14 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const goToLoginPage = () => {
-  router.push("/login"); // '/join' 경로로 이동
+const goToCalendarPage = () => {
+  router.push("/calendar"); // '/join' 경로로 이동
 };
 </script>
 
 <template>
 
-  <div class="thumbnail-container" @click="goToLoginPage">
+  <div class="thumbnail-container" @click="goToCalendarPage">
     <img src="../assets/logo.png" alt="calog logo" class="logo" />
     <p class="description">대회의 시작과 끝, 모든 기록을 한 눈에</p>
   </div>

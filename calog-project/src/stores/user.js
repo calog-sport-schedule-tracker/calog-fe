@@ -40,8 +40,9 @@ export const useUserStore = defineStore("user", () => {
       .post(API_URL, payload)
       .then((response) => {
         console.log("response.data", response.data);
-        alert(`환영합니다, ${response.data.nickname} 님! 회원가입이 완료되었습니다.`);
-
+        console.log("payload", payload);
+        alert(`축하합니다, ${payload.nickname} 님! 회원가입이 완료되었습니다.`);
+        
         // 회원가입 후 로그인 페이지로 이동
         router.push("/login");
       })

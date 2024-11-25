@@ -1,13 +1,10 @@
 <script setup>
 import CardRegistBody from "@/components/CardRegistBody.vue";
 import CardRegistHeader from "@/components/CardRegistHeader.vue";
-import Header from "@/components/Header.vue";
 
 </script>
 
 <template>
-      <Header />
-
   <!-- 참가 대회 등록 뷰 -->
   <div class="event-regist-container">
     <CardRegistHeader />

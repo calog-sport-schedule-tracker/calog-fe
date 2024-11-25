@@ -1,12 +1,9 @@
 <script setup>
 import CardDetailBody from "@/components/CardDetailBody.vue";
-import Header from "@/components/Header.vue";
 
 </script>
 
 <template>
-      <Header />
-
   <!-- 참가 대회 등록 뷰 -->
   <div class="card-detail-container">
     <CardDetailBody />

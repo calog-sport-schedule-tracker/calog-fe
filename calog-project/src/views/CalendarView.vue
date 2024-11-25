@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header />
 
     <div class="calendar-container">
       <!-- 지역 필터 -->
@@ -53,8 +52,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import axios from "axios";
 import EventModal from "@/components/EventModal.vue";
-import Header from "@/components/Header.vue";
-
 
 export default {
   components: { FullCalendar, EventModal },
