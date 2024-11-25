@@ -141,7 +141,6 @@ const deleteParticipation = () => {
   flex-direction: column;
   align-items: flex-start;
   gap: 15px; /* 요소 간 간격 */
-
 }
 
 .detail-info p {

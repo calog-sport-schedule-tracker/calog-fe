@@ -210,7 +210,8 @@ const fetchFilteredParticipationList = function (filters) {
           ...participationDetail.value, // 기존 정보 복사
           ...updatedData,   // updatedData의 속성 덮어쓰기
         };
-        participationDetail.value.detail = updatedData.detail;
+        participationDetail.value.detail = updatedData.value;
+
 
     
         console.log("갱신된 participationList: ", participationList.value);

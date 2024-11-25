@@ -1,5 +1,6 @@
 <script setup>
 import CardDetailBody from "@/components/CardDetailBody.vue";
+
 </script>
 
 <template>

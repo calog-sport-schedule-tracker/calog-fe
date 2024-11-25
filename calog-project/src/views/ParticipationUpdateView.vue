@@ -1,6 +1,7 @@
 <script setup>
 import CardUpdateBody from "@/components/CardUpdateBody.vue";
 import CardUpdateHeader from "@/components/CardUpdateHeader.vue";
+
 </script>
 
 <template>

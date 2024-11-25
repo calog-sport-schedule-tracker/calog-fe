@@ -1,31 +1,42 @@
 <script setup>
 import { ref } from 'vue';
+import { useUserStore } from '@/stores/user'; // Pinia 스토어 가져오기
 
 const nickname = ref('');
 const id = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 
-const handleRegister = () => {
+const userStore = useUserStore(); // user 스토어 사용
+
+const handleJoin = () => {
   if (password.value !== confirmPassword.value) {
-    alert('Passwords do not match. Please try again.');
+    alert('비밀번호가 일치하지 않습니다. 다시 시도하세요!');
     return;
   }
-  alert(`Welcome, ${nickname.value}! Your account has been registered.`);
+
+  const payload = {
+    nickname: nickname.value,
+    userId: id.value,
+    password: password.value,
+  };
+
+  // Pinia 스토어의 join 메서드 호출
+  userStore.join(payload);
 };
 </script>
 
 <template>
-  <div class="register-container">
-    <img src="../assets/logo.png" alt="calog" />
-    <form @submit.prevent="handleRegister" class="register-form">
+  <div class="join-container">
+    <!-- <img src="../assets/logo.png" alt="calog" /> -->
+    <form @submit.prevent="handleJoin" class="join-form">
+      <div class="input-group">
+        <label for="id">Id</label>
+        <input v-model="id" type="text" id="id" required />
+      </div>
       <div class="input-group">
         <label for="nickname">Nickname</label>
         <input v-model="nickname" type="text" id="nickname" required />
-      </div>
-      <div class="input-group">
-        <label for="email">id</label>
-        <input v-model="id" type="text" id="id" required />
       </div>
       <div class="input-group">
         <label for="password">Password</label>
@@ -35,26 +46,27 @@ const handleRegister = () => {
         <label for="confirm-password">Confirm Password</label>
         <input v-model="confirmPassword" type="password" id="confirm-password" required />
       </div>
-      <button type="submit" class="register-button">Join</button>
+      <button type="submit" class="join-button">Join</button>
     </form>
   </div>
 </template>
 
 <style scoped>
+/* 기존 CSS 유지 */
 img {
   width: 20%;
 }
 
-.register-container {
+.join-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background-color: #f9f9f9;
+  background-color: white;
+  height: calc(100vh - 60px);
 }
 
-.register-form {
+.join-form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -62,14 +74,14 @@ img {
 }
 
 .input-group {
-  width: 100%;
-  margin-bottom: 1rem;
+  width: 120%;
+  margin: 0.7rem 0;
 }
 
 .input-group label {
   display: block;
   font-size: 0.9rem;
-  color: #888;
+  color: rgba(0, 0, 0, 0.873);
   margin-bottom: 0.5rem;
 }
 
@@ -88,8 +100,8 @@ img {
   box-shadow: 0 0 5px rgba(67, 165, 255, 0.3);
 }
 
-.register-button {
-  width: 100%;
+.join-button {
+  width: 120%;
   padding: 0.8rem;
   font-size: 1rem;
   background-color: #43a5ff;
@@ -98,13 +110,14 @@ img {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 0.8rem;
 }
 
-.register-button:hover {
+.join-button:hover {
   background-color: #258ef0;
 }
 
-.register-button:active {
+.join-button:active {
   background-color: #0373db;
 }
 </style>

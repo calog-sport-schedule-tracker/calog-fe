@@ -19,7 +19,7 @@ const handleJoin = () => {
 
 <template>
   <div class="login-container">
-    <img src="../assets/logo.png" alt="calog">
+    <!-- <img src="../assets/logo.png" alt="calog"> -->
     <form @submit.prevent="handleSubmit" class="login-form">
       <div class="input-group">
         <label for="id">Id</label>
@@ -47,7 +47,7 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  height: calc(100vh - 60px);
   background-color: white;
 }
 
@@ -60,7 +60,7 @@ img {
 
 .input-group {
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .input-group label {

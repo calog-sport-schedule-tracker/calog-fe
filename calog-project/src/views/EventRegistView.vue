@@ -1,6 +1,7 @@
 <script setup>
 import CardRegistBody from "@/components/CardRegistBody.vue";
 import CardRegistHeader from "@/components/CardRegistHeader.vue";
+
 </script>
 
 <template>

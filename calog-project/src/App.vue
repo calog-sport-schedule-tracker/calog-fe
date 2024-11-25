@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <Header />
+    <Header v-if="!isThumbnailView"/>
     <div class="router-view-container">
       <RouterView />
     </div>
@@ -11,6 +11,19 @@
 <script setup>
 import Header from "./components/Header.vue";
 import { RouterLink, RouterView } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { watch, computed } from "vue";
+
+const route = useRoute();
+const isThumbnailView = computed(()=>route.path === '/');
+
+console.log("현재 path: ", route.path);
+console.log("isThumbnailView: ",isThumbnailView);
+
+// watch(
+//   ()=> route.path,
+//   (newPath)=> {console.log("현재 path: ", newPath);}
+// )
 </script>
 
 <style scoped>
