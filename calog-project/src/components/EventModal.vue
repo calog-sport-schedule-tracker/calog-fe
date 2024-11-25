@@ -65,9 +65,13 @@ export default {
   initializeMap() {
       
       if (!window.kakao ||!this.event.address) {
-        console.error("Kakao Map API 안뜸 아님 주소못찾음 ㅜ");
+        console.error("!window.kakao");
+        console.log(window.kakao);
         return;
-
+      }
+      else if (!this.event.address) {
+        console.log("!this.event.address");
+        return;
       }
       console.log("지도 초기화");
       console.log("전달된 주소:", this.event.address);

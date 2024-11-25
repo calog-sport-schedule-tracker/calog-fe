@@ -1,9 +1,16 @@
 <script setup>
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
+
+const goToCalendarPage = () => {
+  router.push("/calendar"); // '/join' 경로로 이동
+};
 </script>
 
 <template>
-  <div class="thumbnail-container">
+
+  <div class="thumbnail-container" @click="goToCalendarPage">
     <img src="../assets/logo.png" alt="calog logo" class="logo" />
     <p class="description">대회의 시작과 끝, 모든 기록을 한 눈에</p>
   </div>
@@ -16,7 +23,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f9f9f9;
+  background-color: white;
   font-family: 'Arial', sans-serif;
 }
 

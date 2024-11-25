@@ -27,6 +27,7 @@ const fetchCategories = (eventId) => {
     .then((response) => {
       console.log("세부 종목 데이터:", response.data);
       categories.value = response.data;
+      
     })
     .catch((error) => {
       console.error("세부 종목 로드 실패:", error);
@@ -88,7 +89,7 @@ onMounted(() => {
   const detail = pStore.participationDetail;
 
   if (detail) {
-    console.log("참여 상세 정보:", detail);
+    console.log("참여 상세 정보(memo):", detail.memo);
 
     // 초기 값 설정
     memo.value = detail.memo || "";
@@ -97,32 +98,17 @@ onMounted(() => {
       minute: parseInt(detail.completionTime?.split(':')[1] || 0),
       second: parseInt(detail.completionTime?.split(':')[2] || 0),
     };
-
+    console.log("detail.detail: ", detail.detail);
     // 세부 종목 로드
-    fetchCategories(detail.eventId);
+    fetchCategories(detail.value);
 
     // 선택된 카테고리 초기화
-    selectedCategory.value = detail.detail || "";
+    // selectedCategory.value = detail.detail || "";
+    selectedCategory.value = categories.value.find(c=>c.category === participationDetail.detail)?.id || "";
   } else {
     console.error("참여 상세 정보를 가져올 수 없습니다.");
   }
 });
-
-
-// 삭제 이벤트 처리
-// const deleteParticipation = () => {
-//   if (confirm('정말로 삭제하시겠습니까?')) {
-//     axios.delete(`http://localhost:8080/api/user/1/participation/${id}`)
-//       .then(() => {
-//         alert('이벤트가 삭제되었습니다.');
-//         router.push({name: 'list'}); // 삭제 후 리스트 페이지로 이동
-//       })
-//       .catch(error => {
-//         console.error('오류 발생: ' , error);
-//         alert('삭제 중 오류가 발생했습니다.');
-//       });
-//   }
-// };
 
 </script>
 
