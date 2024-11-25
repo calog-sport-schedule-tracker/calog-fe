@@ -12,6 +12,7 @@ const eventDate = ref("");
 const categories = ref([]);
 const selectedCategory = ref("");
 const completionTime = ref({hour: 0, minute: 0, second: 0});
+const ranking = ref("");
 const memo = ref("");
 
 const sport = ref(""); // 선택된 대회의 sport(마라톤, 배드민턴 등)
@@ -78,7 +79,7 @@ const fetchEventDate = () => {
       console.log("categories 가져오기 된다!")
       console.log(response.data);
       categories.value = response.data; // categories 데이터 설정
-      // console.log(categories.value);
+      console.log(categories.value);
     })
     .catch((error) => {
       console.error('Failed to fetch categories:', error);
@@ -122,6 +123,7 @@ const participation = ref({
   detail: '',
   memo: '',
   completionTime: '',
+  ranking: '',
 })
 
 // 시간으로 변환하기 위함
@@ -133,6 +135,7 @@ const registEvent = function() {
   participation.value.detail = categories.value.find(c => c.id === selectedCategory.value)?.category || '';
   participation.value.memo = memo.value;
   participation.value.completionTime = `${padZero(completionTime.value.hour)}:${padZero(completionTime.value.minute)}:${padZero(completionTime.value.second)}`;
+  participation.value.ranking = ranking.value;
   console.log("전송할 데이터: ", participation.value);
   
   pStore.registParticipation(participation.value);
@@ -178,7 +181,7 @@ const registEvent = function() {
       <!-- 시는 0~23
         분, 초는 0~59 사이에서 선택할 수 있도록 selectbox -->
       <div class="regist-list" id="regist-completionTime">
-        <span>기록: </span>
+        <span><strong>기록: </strong></span>
         <div class="completionTime">
           <select v-model="completionTime.hour">
             <option v-for="h in 24" :key="h" :value="h-1">{{ h-1 }}</option>
@@ -195,6 +198,11 @@ const registEvent = function() {
             <option v-for="s in 60" :key="s" :value="s-1">{{ s-1 }}</option>
           </select> 초
         </div>
+      </div>
+
+      <div class="regist-list">
+        <label for="ranking">순위: </label>
+        <textarea id="ranking" v-model="ranking" rows="1"></textarea>
       </div>
       <!-- 메모 -->
       <!-- text 적을 수 있는 박스  -->
@@ -244,7 +252,8 @@ const registEvent = function() {
 
 .regist-list label,
 .regist-list span {
-  flex: 0 0 120px; /* 고정된 너비를 적용 */
+  flex: 0 0 80px; /* 고정된 너비를 적용 */
+  align-items: center;
   white-space: nowrap;
   text-align: left;
   font-weight: bold;
@@ -267,6 +276,7 @@ const registEvent = function() {
 #regist-completionTime select {
   width: 50px; /* 선택 박스 최소 너비 */
   padding: 4px; /* 내부 여백 */
+  height: 30px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
@@ -296,7 +306,7 @@ const registEvent = function() {
 }
 
 select {
-  margin-top: 10px;
+  /* margin-top: 10px; */
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
@@ -349,7 +359,8 @@ fieldset {
   width: 500px;
   height: 100px;
   padding: 10px; /* 내부 여백 추가 */
-  font-size: 14px; /* 글자 크기 조정 */
+  font-size: 14px; /* 
+  글자 크기 조정 */
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: none; /* 사용자가 크기를 조정하지 못하도록 설정 */
@@ -365,6 +376,18 @@ fieldset {
 
 .completionTime select {
   margin-right: 10px;
+  width: 200px;
 }
 
+#ranking {
+  width: 200px;
+  height: 30px;
+  padding: 10px; /* 내부 여백 추가 */
+  font-size: 14px; /* 
+  글자 크기 조정 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none; /* 사용자가 크기를 조정하지 못하도록 설정 */
+  box-sizing: border-box;
+}
 </style>
