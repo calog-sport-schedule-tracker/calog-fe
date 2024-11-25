@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <Header />
+    <!-- <Header /> -->
     <div class="router-view-container">
       <RouterView />
     </div>
@@ -11,6 +11,11 @@
 <script setup>
 import Header from "./components/Header.vue";
 import { RouterLink, RouterView } from "vue-router";
+// import { useRoute, useRouter } from "vue-router";
+
+// const route = useRoute();
+// const isThumbnailView = route.path ==='/';
+
 </script>
 
 <style scoped>

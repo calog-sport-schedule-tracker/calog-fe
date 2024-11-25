@@ -2,11 +2,14 @@
 import ProfileCard from "@/components/ProfileCard.vue";
 import Participation from "@/components/Participation.vue";
 import ParticipationListHeader from "@/components/ParticipationListHeader.vue";
+import Header from "@/components/Header.vue";
 
 
 </script>
 
 <template>
+      <Header />
+
   <div class="participation-list-view">
     <div class="participation-list-header">
       <ParticipationListHeader/>

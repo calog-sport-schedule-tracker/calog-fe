@@ -1,9 +1,12 @@
 <script setup>
 import CardUpdateBody from "@/components/CardUpdateBody.vue";
 import CardUpdateHeader from "@/components/CardUpdateHeader.vue";
+import Header from "@/components/Header.vue";
+
 </script>
 
 <template>
+      <Header />
   <!-- 참가 대회 등록 뷰 -->
   <div class="card-update-container">
     <CardUpdateBody />

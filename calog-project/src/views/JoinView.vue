@@ -1,31 +1,42 @@
 <script setup>
 import { ref } from 'vue';
+import { useUserStore } from '@/stores/user'; // Pinia 스토어 가져오기
 
 const nickname = ref('');
-const email = ref('');
+const id = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 
-const handleRegister = () => {
+const userStore = useUserStore(); // user 스토어 사용
+
+const handleJoin = () => {
   if (password.value !== confirmPassword.value) {
     alert('Passwords do not match. Please try again.');
     return;
   }
-  alert(`Welcome, ${nickname.value}! Your account has been registered.`);
+
+  const payload = {
+    nickname: nickname.value,
+    userId: id.value,
+    password: password.value,
+  };
+
+  // Pinia 스토어의 join 메서드 호출
+  userStore.join(payload);
 };
 </script>
 
 <template>
-  <div class="register-container">
+  <div class="join-container">
     <img src="../assets/logo.png" alt="calog" />
-    <form @submit.prevent="handleRegister" class="register-form">
+    <form @submit.prevent="handleJoin" class="join-form">
+      <div class="input-group">
+        <label for="id">Id</label>
+        <input v-model="id" type="text" id="id" required />
+      </div>
       <div class="input-group">
         <label for="nickname">Nickname</label>
         <input v-model="nickname" type="text" id="nickname" required />
-      </div>
-      <div class="input-group">
-        <label for="email">E-mail</label>
-        <input v-model="email" type="email" id="email" required />
       </div>
       <div class="input-group">
         <label for="password">Password</label>
@@ -35,17 +46,19 @@ const handleRegister = () => {
         <label for="confirm-password">Confirm Password</label>
         <input v-model="confirmPassword" type="password" id="confirm-password" required />
       </div>
-      <button type="submit" class="register-button">Join</button>
+
+      <button type="submit" class="join-button">Join</button>
     </form>
   </div>
 </template>
 
 <style scoped>
+/* 기존 CSS 유지 */
 img {
   width: 20%;
 }
 
-.register-container {
+.join-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,7 +67,7 @@ img {
   background-color: #f9f9f9;
 }
 
-.register-form {
+.join-form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,7 +101,7 @@ img {
   box-shadow: 0 0 5px rgba(67, 165, 255, 0.3);
 }
 
-.register-button {
+.join-button {
   width: 100%;
   padding: 0.8rem;
   font-size: 1rem;
@@ -100,11 +113,11 @@ img {
   transition: background-color 0.3s;
 }
 
-.register-button:hover {
+.join-button:hover {
   background-color: #258ef0;
 }
 
-.register-button:active {
+.join-button:active {
   background-color: #0373db;
 }
 </style>
