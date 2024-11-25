@@ -202,11 +202,11 @@ const registEvent = function() {
 
       <div class="regist-list">
         <label for="ranking">순위: </label>
-        <textarea id="ranking" v-model="ranking" rows="1"></textarea>
+        <textarea id="ranking" v-model="ranking" rows="1"></textarea> 위
       </div>
       <!-- 메모 -->
       <!-- text 적을 수 있는 박스  -->
-      <div class="regist-list">
+      <div class="regist-list" id="memo-container">
         <label for="memo">memo: </label>
         <textarea id="memo" v-model="memo" rows="2"></textarea>
       </div>
@@ -356,12 +356,12 @@ fieldset {
 
 /* 메모 크기 조정 */
 #memo {
-  width: 500px;
+  width: 690px;
   height: 100px;
   padding: 10px; /* 내부 여백 추가 */
   font-size: 14px; /* 
   글자 크기 조정 */
-  border: 1px solid #ccc;
+  border: 1px solid black;
   border-radius: 4px;
   resize: none; /* 사용자가 크기를 조정하지 못하도록 설정 */
   box-sizing: border-box;
@@ -389,5 +389,16 @@ fieldset {
   border-radius: 4px;
   resize: none; /* 사용자가 크기를 조정하지 못하도록 설정 */
   box-sizing: border-box;
+  margin-right: 5px;
 }
+
+#memo-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+#memo-container label {
+  margin-top: 4px;
+}
+
 </style>

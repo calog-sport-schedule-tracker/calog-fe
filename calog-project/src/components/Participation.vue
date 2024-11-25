@@ -4,9 +4,7 @@ import { useParticipationStore } from '@/stores/participation';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
-
 const pStore = useParticipationStore();
-// const eStore = useEventStore();
 const router = useRouter();
 
 onMounted(()=>{
@@ -52,7 +50,7 @@ function goToDetail(id) {
 
         <div class="list-item">
           <div class="list-title">기록</div>
-          <div v-if="list.completionTime" class="list-content" >{{ list.completionTime }}</div>
+          <div v-if="list.completionTime !== '00:00:00'" class="list-content" >{{ list.completionTime }}</div>
           <div v-else class="list-content" ></div>
 
         </div>
