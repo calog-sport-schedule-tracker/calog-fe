@@ -190,23 +190,35 @@ export default {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  
+  min-height: 30px;
 }
 
 .filter-container button {
+  font-size: 14px;
   padding: 5px 20px;
   background-color: #3094CA;
   color: snow;
-  font-family: 'Do Hyeon', 'Jua';
+  /* font-family: 'Do Hyeon', 'Jua'; */
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* 부드러운 전환 효과 */
+  min-height: 32px;
+  margin-left: 5px;
 }
 
-.filter-container select,
-.filter-container button {
-  min-height: 30px; /* select 및 버튼의 동일 너비 */
+/* 호버 효과 */
+.filter-container button:hover {
+  background-color: #2678A3; /* 호버 시 버튼 색상 변경 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 효과 추가 */
+  transform: translateY(-2px); /* 약간 위로 이동 */
+}
 
+/* 눌렀을 때 효과 */
+.filter-container button:active {
+  background-color: #1D5F83; /* 눌렀을 때 버튼 색상 변경 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 감소 */
+  transform: translateY(1px); /* 약간 아래로 이동 */
 }
 
 /* 캘린더 크기 조정 */
