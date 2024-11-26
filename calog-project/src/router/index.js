@@ -22,6 +22,12 @@ const router = createRouter({
       name: 'calendar',
       component: CalendarView,
     },
+    {
+      path: '/favorites',
+      name: 'FavoriteCalendar',
+      component: () => import('@/views/FavoriteCalendarView.vue')
+    },
+    
 
     {
       path: '/list',
