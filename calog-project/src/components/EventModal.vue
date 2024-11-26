@@ -1,23 +1,32 @@
 <template>
   <div class="modal-overlay" @click.self="close">
     <div class="modal-content">
+    <!-- 헤더 -->
       <div class="modal-header">
         <h1>{{ event.eventName }}</h1>
         <button class="material-symbols-outlined" @click="close">close</button> <!-- 모달창 끄는 버튼 --> 
       </div>
+    <!-- 바디 -->
+      <!-- left(이미지), right(내용) -->
       <div class="modal-body">
-        <div class="modal-body-left">
-          <img :src="getEventImage(event)" alt="Event Image" />
-        </div>
-        <div class="modal-body-right">
-          <p><strong>종목: </strong> {{ event.sport }}</p>
-          <p><strong>일시: </strong> {{ formatDate(event.eventDate) }}</p>
-          <p><strong>장소: </strong> {{ event.address }}, {{ event.city }}</p>
-          <p><strong>등록 기간: </strong> {{ formatDate(event.registrationStart) }} - {{ formatDate(event.registrationDeadline) }}</p>
-          <p><strong>세부 종목:</strong> {{ event.details.map(detail => detail.category).join(', ') }}</p>
-          <button @click="initializeMap" class="map-button">지도 보기</button>
-          <div id="map" style="width: 100%; height: 300px; margin-top: 20px;"></div>
-        </div>
+        <!-- main과 map으로 나뉘어져 있음 -->
+        <section class="modal-body-main">
+          <div class="modal-body-left">
+            <img :src="getEventImage(event)" alt="Event Image" />
+          </div>
+          <div class="modal-body-right">
+            <p><strong>종목: </strong> {{ event.sport }}</p>
+            <p><strong>일시: </strong> {{ formatDate(event.eventDate) }}</p>
+            <p><strong>장소: </strong> {{ event.address }}, {{ event.city }}</p>
+            <p><strong>등록 기간: </strong> {{ formatDate(event.registrationStart) }} - {{ formatDate(event.registrationDeadline) }}</p>
+            <p><strong>세부 종목:</strong> {{ event.details.map(detail => detail.category).join(', ') }}</p>
+            <button @click="initializeMap" class="map-button">지도 보기</button>
+            </div>
+        </section>
+        <section class="modal-map">
+          <div id="map" style="width: 100%; height: 500px; margin-top: 20px;"></div>
+        </section>
+
       </div>
     </div>
   </div>
@@ -77,7 +86,6 @@ export default {
       console.log("전달된 주소:", this.event.address);
 
   
-
       const container = document.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 위치 
@@ -107,10 +115,6 @@ export default {
       console.error("주소 변환 실패! 상태 코드:", status);
     }
   });
-
-      
-
-
     },
   },
 };
@@ -168,9 +172,16 @@ export default {
 }
 
 .modal-body {
-  display: flex; /* Flexbox 레이아웃 */
+  display: flex;
+  flex-direction: column;
   gap: 50px; /* 양쪽 섹션 간 간격 */
   padding: 20px;
+}
+
+.modal-body-main {
+  display: flex;
+  gap: 20px;
+  width: 100%;
 }
 
 .modal-body-left {
@@ -191,8 +202,8 @@ export default {
 
 
 .modal-content img {
-  width: 80%;
-  height: 80%;
+  width: 95%;
+  height: 95%;
   border-radius: 8px;
   margin: 20px;
 }
@@ -244,6 +255,5 @@ button:active {
   transform: scale(0.98); /* 클릭 시 살짝 축소 */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* 그림자 더 작게 */
 }
-
 
 </style>

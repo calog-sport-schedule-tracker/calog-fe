@@ -2,7 +2,7 @@
 	<div class="head">
 		<header class="header">
 			<div class="logo-container">
-				<img src="./../assets/logo.png" alt="calog" class="logo">
+				<img src="./../assets/logo.png" alt="calog" class="logo" @click="goToThumbnail">
 			</div>
 			<nav class="menu">
 				<RouterLink to="/calendar" class="material-symbols-outlined" >calendar_month</RouterLink>
@@ -15,6 +15,14 @@
 
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const goToThumbnail = function() {
+  router.push('/');
+}
+
 </script>
 
 <style scoped>
@@ -38,12 +46,31 @@ body {
 
 .logo {
   height: 2.8em;
+  transition: filter 0.3s ease;
+}
+
+.logo-container:hover .logo {
+  filter: brightness(1.1); /* 로고가 더 밝아지게 */
+}
+
+.logo-container:active .logo {
+  filter: brightness(0.9); /* 클릭 시 로고가 더 어두워지게 */
 }
 
 .logo-container {
   display: flex;
   align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
 }
+
+.logo-container:hover {
+  transform: scale(1.1); /* 로고가 약간 커지게 */
+}
+
+.logo-container:active {
+  transform: scale(0.95); /* 클릭 시 로고가 약간 작아지게 */
+}
+
 
 .menu {
   display: flex;

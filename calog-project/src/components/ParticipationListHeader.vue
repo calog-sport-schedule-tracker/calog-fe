@@ -225,17 +225,32 @@ function goToEventRegist() {
 
 .header-container button {
   font-size: 14px;
+  /* font-family: 'Do Hyeon', 'Jua'; */
   padding: 5px 20px;
   background-color: #3094CA;
   color: snow;
-
   border: none;
   border-radius: 4px;
   cursor: pointer;
   min-height: 35px; /* 버튼 높이 통일 */
   line-height: normal; /* 텍스트의 세로 정렬 문제 해결 */
+  transition: background-color 0.3s, transform 0.2s; /* 부드러운 전환 효과 */
 
 }
+/* 호버 효과 */
+.header-container button:hover {
+  background-color: #2678A3; /* 호버 시 버튼 색상 변경 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 효과 추가 */
+  transform: translateY(-2px); /* 약간 위로 이동 */
+}
+
+/* 눌렀을 때 효과 */
+.header-container button:active {
+  background-color: #1D5F83; /* 눌렀을 때 버튼 색상 변경 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 감소 */
+  transform: translateY(1px); /* 약간 아래로 이동 */
+}
+
 
 .header-container select{
   min-height: 30px; /* select 및 버튼의 동일 너비 */
@@ -258,7 +273,7 @@ function goToEventRegist() {
   background-size: 12px; /* 드롭다운 화살표 크기 */
 }
 
-.filter-container select:hover {
+.header-container select:hover {
   border-color: #3094CA; /* 호버 시 테두리 색상 */
   background-color: #e8f4fc; /* 호버 시 배경색 */
 }
