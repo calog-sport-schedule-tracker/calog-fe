@@ -6,6 +6,7 @@
 			</div>
 			<nav class="menu">
 				<RouterLink to="/calendar" class="material-symbols-outlined" >calendar_month</RouterLink>
+        <RouterLink to="/favorites" class="material-symbols-outlined" >favorite</RouterLink>
 				<RouterLink to="/list" class="material-symbols-outlined" >list</RouterLink>
 				<RouterLink to="/login" class="material-symbols-outlined" >person</RouterLink>
 			</nav>
