@@ -4,7 +4,10 @@
     <!-- 헤더 -->
       <div class="modal-header">
         <h1>{{ event.eventName }}</h1>
-        <button class="material-symbols-outlined" @click="close">close</button> <!-- 모달창 끄는 버튼 --> 
+        <div class="modal-button">
+          <button class="material-symbols-outlined" :class="{ 'is-favorite': isFavorite }" @click="fetchFavorite">favorite</button>
+          <button class="material-symbols-outlined" @click="close">close</button> <!-- 모달창 끄는 버튼 --> 
+        </div>
       </div>
     <!-- 바디 -->
       <!-- left(이미지), right(내용) -->
@@ -33,6 +36,8 @@
 </template>
 
 <script>
+import axios  from 'axios';
+
 export default {
   props: {
     event: {
@@ -40,15 +45,72 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      isFavorite: false, // 찜 상태 초기화
+    }
+  },
+  mounted() {
+    this.checkFavoriteStatus();
+  },
   methods: {
     close() {
       console.log("close 버튼 클릭됨"); //디버깅용 ㅎㅎ
       this.$emit("close"); 
+      
     },
     formatDate(date) {
       const options = { year: "numeric", month: "long", day: "numeric" };
       return new Date(date).toLocaleDateString("ko-KR", options);
     },
+
+    fetchFavorite() {
+      const eventId = this.event.id;
+      console.log("eventId: 😭", eventId);
+      const url = `api/favorite/user/1/event/${eventId}`;
+      
+      if (this.isFavorite) {
+        axios.delete(url)
+          .then(()=> {
+            console.error("찜 해제 성공!");
+            console.log("isFavorite 변경 전🔥: ", this.isFavorite);
+            this.isFavorite = false;
+            console.log("isFavorite 변경 후🔥: ", this.isFavorite);
+
+          })
+          .catch((error)=> {
+            console.error("찜 해제 실패 😨");
+          })
+      } else {
+        axios.post(url)
+          .then(()=> {
+            console.error("찜 추가 성공!");
+            console.log("isFavorite 변경 전🔥: ", this.isFavorite);
+            this.isFavorite = true;
+            console.log("isFavorite 변경 후🔥: ", this.isFavorite);
+
+          })
+          .catch((error) => {
+            console.log("찜 추가 실패 😣");
+          })
+        }
+      },
+      checkFavoriteStatus() {
+        const eventId = this.event.id;
+        const url = `api/favorite/user/1/event/${eventId}`;
+
+        axios
+          .get(url)
+          .then((response) => {
+            // 서버가 true/false를 반환한다고 가정
+            console.log("초기 찜 상태 🥹:", response.data);
+            this.isFavorite = response.data.isFavorite;
+          })
+          .catch((error) => {
+            console.error("찜 상태 확인 실패 😣", error);
+          });
+      },
+
     // 대회의 이미지가 존재하지 않을 경우 대회의 종목에 따라 대표 이미지 변경하는 메서드
     getEventImage(event) {
       if (!event.img) {
@@ -72,7 +134,6 @@ export default {
     return event.img; 
   },
   initializeMap() {
-      
       if (!window.kakao ||!this.event.address) {
         console.error("!window.kakao");
         console.log(window.kakao);
@@ -254,6 +315,10 @@ button:hover {
 button:active {
   transform: scale(0.98); /* 클릭 시 살짝 축소 */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* 그림자 더 작게 */
+}
+
+.is-favorite {
+  color: black; /* or any color to indicate favoriting */
 }
 
 </style>
