@@ -172,17 +172,20 @@
     border-radius: 4px;
     
   }
-  
+
   .filter-container button {
+    font-size: 14px;
     padding: 5px 20px;
-    background-color: #3094CA;
+    background-color: purple;
     color: snow;
-    font-family: 'Do Hyeon', 'Jua';
+    /* font-family: 'Do Hyeon', 'Jua'; */
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* 부드러운 전환 효과 */
+    min-height: 32px;
+    margin-left: 5px;
   }
-  
   .filter-container select,
   .filter-container button {
     min-height: 30px; /* select 및 버튼의 동일 너비 */
@@ -202,7 +205,7 @@
   /* 캘린더 헤더 스타일 */
   /* FullCalendar Toolbar 스타일 */
   ::v-deep(.fc-toolbar) {
-    background-color: #3094CA; /* 배경색 */
+    background-color: purple; /* 배경색 */
     color: white; /* 텍스트 색상 */
     border-radius: 12px 12px 0 0; /* 위쪽 둥근 모서리 */
     padding: 10px 20px; /* 전체 여백 (위아래, 좌우) */
@@ -210,7 +213,9 @@
     display: flex;
     align-items: center; /* 세로 중앙 정렬 */
     justify-content: space-between; /* 좌우 정렬 */
+    border-color: purple; /* 이벤트 테두리 색상을 보라색으로 설정 */
   }
+
   
   /* ::v-deep(.filter-container button) {
     background-color: snow !important;
@@ -223,7 +228,7 @@
     border-radius: 6px; /* 둥근 모서리 */
     margin: 0 5px; /* 버튼 간격 */
     background-color: #ffffff; /* 버튼 배경 */
-    color: #3094CA; /* 버튼 텍스트 색상 */
+    color: purple; /* 버튼 텍스트 색상 */
     border: none; /* 테두리 제거 */
     cursor: pointer;
     transition: background-color 0.3s;
@@ -272,9 +277,23 @@
   }
   
   .filter-container select:hover {
-    border-color: #3094CA; /* 호버 시 테두리 색상 */
+    border-color: purple; /* 호버 시 테두리 색상 */
     background-color: #e8f4fc; /* 호버 시 배경색 */
   }
+
+  /* 호버 효과 */
+.filter-container button:hover {
+  background-color: rgb(100, 2, 100); /* 호버 시 버튼 색상 변경 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 효과 추가 */
+  transform: translateY(-2px); /* 약간 위로 이동 */
+}
+
+/* 눌렀을 때 효과 */
+.filter-container button:active {
+  background-color: rgb(54, 2, 54); /* 눌렀을 때 버튼 색상 변경 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 감소 */
+  transform: translateY(1px); /* 약간 아래로 이동 */
+}
   
   </style>
   

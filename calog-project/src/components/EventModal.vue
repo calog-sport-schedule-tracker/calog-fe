@@ -1,18 +1,24 @@
 <template>
   <div class="modal-overlay" @click.self="close">
     <div class="modal-content">
-    <!-- 헤더 -->
+      <!-- 헤더 -->
       <div class="modal-header">
         <h1>{{ event.eventName }}</h1>
         <div class="modal-button">
-          <button class="material-symbols-outlined" :class="{ 'is-favorite': isFavorite }" @click="fetchFavorite">favorite</button>
-          <button class="material-symbols-outlined" @click="close">close</button> <!-- 모달창 끄는 버튼 --> 
+          <button
+            class="material-symbols-outlined"
+            :class="{ 'is-favorite': isFavorite }"
+            @click="fetchFavorite"
+          >
+            favorite
+          </button>
+          <button class="material-symbols-outlined" @click="close">
+            close
+          </button>
         </div>
       </div>
-    <!-- 바디 -->
-      <!-- left(이미지), right(내용) -->
+      <!-- 바디 -->
       <div class="modal-body">
-        <!-- main과 map으로 나뉘어져 있음 -->
         <section class="modal-body-main">
           <div class="modal-body-left">
             <img :src="getEventImage(event)" alt="Event Image" />
@@ -20,165 +26,149 @@
           <div class="modal-body-right">
             <p><strong>종목: </strong> {{ event.sport }}</p>
             <p><strong>일시: </strong> {{ formatDate(event.eventDate) }}</p>
-            <p><strong>장소: </strong> {{ event.address }}, {{ event.city }}</p>
-            <p><strong>등록 기간: </strong> {{ formatDate(event.registrationStart) }} - {{ formatDate(event.registrationDeadline) }}</p>
-            <p><strong>세부 종목:</strong> {{ event.details.map(detail => detail.category).join(', ') }}</p>
+            <p>
+              <strong>장소: </strong> {{ event.address }}, {{ event.city }}
+            </p>
+            <p>
+              <strong>등록 기간: </strong>
+              {{ formatDate(event.registrationStart) }} -
+              {{ formatDate(event.registrationDeadline) }}
+            </p>
+            <p>
+              <strong>세부 종목:</strong>
+              {{ event.details.map(detail => detail.category).join(', ') }}
+            </p>
             <button @click="initializeMap" class="map-button">지도 보기</button>
-            </div>
+          </div>
         </section>
         <section class="modal-map">
           <div id="map" style="width: 100%; height: 500px; margin-top: 20px;"></div>
         </section>
-
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import axios  from 'axios';
+<script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
-export default {
-  props: {
-    event: {
-      type: Object,
-      required: true,
-    },
+// Props 정의
+const props = defineProps({
+  event: {
+    type: Object,
+    required: true,
   },
-  data() {
-    return {
-      isFavorite: false, // 찜 상태 초기화
-    }
-  },
-  mounted() {
-    this.checkFavoriteStatus();
-  },
-  methods: {
-    close() {
-      console.log("close 버튼 클릭됨"); //디버깅용 ㅎㅎ
-      this.$emit("close"); 
-      
-    },
-    formatDate(date) {
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      return new Date(date).toLocaleDateString("ko-KR", options);
-    },
+});
 
-    fetchFavorite() {
-      const eventId = this.event.id;
-      console.log("eventId: 😭", eventId);
-      const url = `api/favorite/user/1/event/${eventId}`;
-      
-      if (this.isFavorite) {
-        axios.delete(url)
-          .then(()=> {
-            console.error("찜 해제 성공!");
-            console.log("isFavorite 변경 전🔥: ", this.isFavorite);
-            this.isFavorite = false;
-            console.log("isFavorite 변경 후🔥: ", this.isFavorite);
+// Emit 정의
+const emit = defineEmits(['close']);
 
-          })
-          .catch((error)=> {
-            console.error("찜 해제 실패 😨");
-          })
-      } else {
-        axios.post(url)
-          .then(()=> {
-            console.error("찜 추가 성공!");
-            console.log("isFavorite 변경 전🔥: ", this.isFavorite);
-            this.isFavorite = true;
-            console.log("isFavorite 변경 후🔥: ", this.isFavorite);
+// State
+const isFavorite = ref(false);
 
-          })
-          .catch((error) => {
-            console.log("찜 추가 실패 😣");
-          })
-        }
-      },
-      checkFavoriteStatus() {
-        const eventId = this.event.id;
-        const url = `api/favorite/user/1/event/${eventId}`;
+// Methods
+function close() {
+  console.log('close 버튼 클릭됨');
+  emit('close');
+}
 
-        axios
-          .get(url)
-          .then((response) => {
-            // 서버가 true/false를 반환한다고 가정
-            console.log("초기 찜 상태 🥹:", response.data);
-            this.isFavorite = response.data.isFavorite;
-          })
-          .catch((error) => {
-            console.error("찜 상태 확인 실패 😣", error);
-          });
-      },
+function formatDate(date) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(date).toLocaleDateString('ko-KR', options);
+}
 
-    // 대회의 이미지가 존재하지 않을 경우 대회의 종목에 따라 대표 이미지 변경하는 메서드
-    getEventImage(event) {
-      if (!event.img) {
-        if (event.sport === "마라톤") {
-          return new URL('@/assets/sport-image/marathon.jpg', import.meta.url).href;
-        } else if (event.sport === "그랑폰도") {
-          return new URL('@/assets/sport-image/granfondo.jpg', import.meta.url).href;
-        } else if (event.sport === "테니스") {
-          return new URL('@/assets/sport-image/tennis.jpg', import.meta.url).href;
-        } else if (event.sport ==="배드민턴") {
-          return new URL('@/assets/sport-image/badminton.jpg', import.meta.url).href;
-        } else if (event.sport ==="철인3종") {
-          return new URL('@/assets/sport-image/triathlon.jpg', import.meta.url).href;
-        } 
-      
-      else {
+function fetchFavorite() {
+  const eventId = props.event.id;
+  const url = `api/favorite/user/1/event/${eventId}`;
+
+  if (isFavorite.value) {
+    axios
+      .delete(url)
+      .then(() => {
+        console.log('찜 해제 성공');
+        isFavorite.value = false;
+      })
+      .catch(() => {
+        console.error('찜 해제 실패');
+      });
+  } else {
+    axios
+      .post(url)
+      .then(() => {
+        console.log('찜 추가 성공');
+        isFavorite.value = true;
+      })
+      .catch(() => {
+        console.error('찜 추가 실패');
+      });
+  }
+}
+
+function checkFavoriteStatus() {
+  const eventId = props.event.id;
+  const url = `api/favorite/user/1/event/${eventId}`;
+
+  axios
+    .get(url)
+    .then(response => {
+      isFavorite.value = response.data.isFavorite;
+    })
+    .catch(error => {
+      console.error('찜 상태 확인 실패', error);
+    });
+}
+
+function getEventImage(event) {
+  if (!event.img) {
+    switch (event.sport) {
+      case '마라톤':
+        return new URL('@/assets/sport-image/marathon.jpg', import.meta.url).href;
+      case '그랑폰도':
+        return new URL('@/assets/sport-image/granfondo.jpg', import.meta.url).href;
+      case '테니스':
+        return new URL('@/assets/sport-image/tennis.jpg', import.meta.url).href;
+      case '배드민턴':
+        return new URL('@/assets/sport-image/badminton.jpg', import.meta.url).href;
+      case '철인3종':
+        return new URL('@/assets/sport-image/triathlon.jpg', import.meta.url).href;
+      default:
         return new URL('@/assets/sport-image/default.jpg', import.meta.url).href;
-        //혹시 몰라 기본 이미지 생성
-      }
     }
-    return event.img; 
-  },
-  initializeMap() {
-      if (!window.kakao ||!this.event.address) {
-        console.error("!window.kakao");
-        console.log(window.kakao);
-        return;
-      }
-      else if (!this.event.address) {
-        console.log("!this.event.address");
-        return;
-      }
-      console.log("지도 초기화");
-      console.log("전달된 주소:", this.event.address);
+  }
+  return event.img;
+}
 
-  
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 위치 
-        level: 3,
-      };
-      const map = new kakao.maps.Map(container, options);
-      const geocoder = new window.kakao.maps.services.Geocoder();
+function initializeMap() {
+  if (!window.kakao || !props.event.address) {
+    console.error('지도 초기화 실패');
+    return;
+  }
 
-      geocoder.addressSearch(this.event.address, (result, status) => {
-        if (status === kakao.maps.services.Status.OK) {
-        console.log("주소 검색 성공! 결과:", result);
+  const container = document.getElementById('map');
+  const options = {
+    center: new kakao.maps.LatLng(37.5665, 126.978),
+    level: 3,
+  };
+  const map = new kakao.maps.Map(container, options);
+  const geocoder = new window.kakao.maps.services.Geocoder();
 
-      // 변환된 좌표를 지도에 반영
+  geocoder.addressSearch(props.event.address, (result, status) => {
+    if (status === kakao.maps.services.Status.OK) {
       const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-      // 마커 생성
-      const marker = new kakao.maps.Marker({
-        map: map,
+      new kakao.maps.Marker({
+        map,
         position: coords,
       });
-
-      // 지도 중심 이동
       map.setCenter(coords);
-
-      console.log("지도에 표시된 좌표:", coords);
     } else {
-      console.error("주소 변환 실패! 상태 코드:", status);
+      console.error('주소 변환 실패');
     }
   });
-    },
-  },
-};
+}
+
+// Lifecycle Hook
+onMounted(checkFavoriteStatus);
 </script>
 
 <style scoped>
@@ -318,7 +308,7 @@ button:active {
 }
 
 .is-favorite {
-  color: black; /* or any color to indicate favoriting */
+  color: black;
 }
 
 </style>
